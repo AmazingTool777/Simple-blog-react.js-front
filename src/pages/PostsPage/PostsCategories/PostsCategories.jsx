@@ -13,20 +13,29 @@ import "./PostsCategories.css";
 // Components
 import CategoryBullet from "../CategoryBullet";
 
+// Custom hooks
+import usePostsCategories from "../usePostsCategories";
+
 const PostsCategories = () => {
+	const { categories, isLoading } = usePostsCategories();
+
 	return (
 		<section className="d-flex align-items-center mt-4">
 			<section
 				id="posts-categories-slider"
 				className="border border-2 border-light border-start-0 border-end-0 py-2 flex-fill"
 			>
-				<Swiper slidesPerView={"auto"} spaceBetween={12} navigation={true} modules={[Navigation]}>
-					{[...Array(15).keys()].map((i) => (
-						<SwiperSlide key={`slide-${i}`} className="post-category-slide py-3">
-							<CategoryBullet category={{ _id: i, label: "Category" }} />
-						</SwiperSlide>
-					))}
-				</Swiper>
+				{categories.length > 0 || isLoading ? (
+					<Swiper slidesPerView={"auto"} spaceBetween={12} navigation={true} modules={[Navigation]}>
+						{categories.map((category) => (
+							<SwiperSlide key={category._id} className="post-category-slide py-3">
+								<CategoryBullet category={category} />
+							</SwiperSlide>
+						))}
+					</Swiper>
+				) : (
+					<p className="pb-0 text-secondary">No categories to show</p>
+				)}
 			</section>
 			<div className="ps-3">
 				<OverlayTrigger placement="bottom" overlay={<Tooltip>View all categories</Tooltip>}>
