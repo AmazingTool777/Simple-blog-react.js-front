@@ -1,0 +1,14 @@
+#posts-categories-slider {
+  /* 3.75rem = 2.75rem + 1rem : The width of the adjacent button block + padding-left */
+  max-width: calc(100% - 3.75rem);
+}
+
+#posts-categories-slider .post-category-slide {
+  width: fit-content;
+  font-size: 0.9375rem; /* 15px */
+}
+
+/* Hiding the previous button when it is disabled */
+#posts-categories-slider .swiper-button-prev.swiper-button-disabled {
+	visibility: hidden;
+}

@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // Components
 import PostsParams from "./PostsParams";
+import PostsCategories from "./PostsCategories";
 
 // Custom hooks
 import usePosts from "./usePosts";
@@ -24,6 +25,7 @@ const PostsPage = () => {
 				onOrderChange={handleOrderChange}
 				onSearchSubmit={handleSearchChange}
 			/>
+			<PostsCategories />
 		</section>
 	);
 };
