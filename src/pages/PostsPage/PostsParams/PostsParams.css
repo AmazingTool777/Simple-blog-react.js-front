@@ -1,0 +1,11 @@
+#posts-date-sort,
+#posts-search {
+	width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+	#posts-date-sort,
+	#posts-search {
+		width: fit-content;
+	}
+}

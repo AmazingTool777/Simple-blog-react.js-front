@@ -1,5 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+// Components
+import PostsParams from "./PostsParams";
+
 const PostsPage = () => {
 	return (
 		<section id="posts-page">
@@ -10,6 +13,7 @@ const PostsPage = () => {
 				</h1>
 				<hr />
 			</header>
+			<PostsParams order="desc" onOrderChange={() => {}} onSearchSubmit={() => {}} />
 		</section>
 	);
 };
