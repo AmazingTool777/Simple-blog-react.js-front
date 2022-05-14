@@ -11,6 +11,8 @@ function usePostsCategories() {
 	const [page, setPage] = useState(1);
 	const [search, setSearch] = useState("");
 
+	const handlePageChange = (page) => setPage(page > pages ? pages : page);
+
 	const [categories, isLoading, count, pages] = usePaginatedApiCall(() => {
 		const LIMIT = 12;
 		return fetchPaginatedCategories(page, LIMIT, search);
@@ -20,7 +22,7 @@ function usePostsCategories() {
 		categories,
 		page,
 		search,
-		handlePageChange: setPage,
+		handlePageChange,
 		handleSearchChange: setSearch,
 		isLoading,
 		count,
