@@ -1,5 +1,12 @@
+// Components
+import IconsImports from "./components/IconsImports";
+
 function App() {
-	return <div className="App"></div>;
+	return (
+		<IconsImports>
+			<div className="App"></div>
+		</IconsImports>
+	);
 }
 
 export default App;
