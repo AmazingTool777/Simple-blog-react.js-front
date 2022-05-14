@@ -1,0 +1,8 @@
+.category-bullet {
+  border-radius: 1.5rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.category-bullet:hover {
+  background-color: #eee;
+}
