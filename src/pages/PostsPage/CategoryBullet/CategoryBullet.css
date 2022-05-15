@@ -3,6 +3,9 @@
   cursor: pointer;
   transition: 0.3s;
 }
+.category-bullet.disabled {
+  opacity: 0.5;
+}
 .category-bullet:hover {
   background-color: #eee;
 }
