@@ -13,7 +13,7 @@ function usePostsCategories(merge = false) {
 
   const handlePageChange = (page) => setPage(page > pages ? pages : page);
 
-  const [categories, isLoading, count, pages] = usePaginatedApiCall(
+  const [categories, isLoading, count, pages, error, reset] = usePaginatedApiCall(
     () => {
       const LIMIT = 12;
       return fetchPaginatedCategories(page, LIMIT, search);
@@ -34,6 +34,8 @@ function usePostsCategories(merge = false) {
     isLoading,
     count,
     pages,
+    error,
+    resetCategories: reset,
   };
 }
 
