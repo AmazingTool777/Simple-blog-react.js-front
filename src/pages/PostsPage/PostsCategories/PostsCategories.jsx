@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import "swiper/css";
@@ -17,8 +18,21 @@ import Loaders from "./PostsCategoriesLoaders.jsx";
 // Custom hooks
 import usePostsCategories from "../usePostsCategories";
 
-const PostsCategories = () => {
-  const { categories, page, isLoading, handlePageChange } = usePostsCategories(false);
+const PostsCategories = ({ isDisabled, categoryId, onCategoryIdSelect }) => {
+  const { categories: _categories, page, isLoading, handlePageChange } = usePostsCategories(false);
+
+  /* Moving the active category bullet to the first
+   Adding a bullet labelled "All" if no category is provided */
+  const categories = useMemo(() => {
+    const categories = [{ _id: null, label: "All" }, ..._categories];
+    if (categoryId) {
+      // Prepending the active category at the beginning
+      const activeIndex = categories.findIndex((category) => category._id === categoryId);
+      const [activeCategory] = categories.splice(activeIndex, 1);
+      categories.unshift(activeCategory);
+    }
+    return categories;
+  }, [categoryId, _categories]);
 
   return (
     <section className="d-flex align-items-center mt-4">
@@ -32,14 +46,16 @@ const PostsCategories = () => {
             spaceBetween={12}
             navigation={true}
             modules={[Navigation]}
-            onReachEnd={() => {
-              console.log("Hello");
-              handlePageChange(page + 1);
-            }}
+            onReachEnd={() => handlePageChange(page + 1)}
           >
             {categories.map((category) => (
               <SwiperSlide key={category._id} className="post-category-slide py-3">
-                <CategoryBullet category={category} />
+                <CategoryBullet
+                  isActive={category._id === categoryId}
+                  isDisabled={isLoading || isDisabled}
+                  category={category}
+                  onClick={onCategoryIdSelect}
+                />
               </SwiperSlide>
             ))}
             {isLoading && (
@@ -49,7 +65,7 @@ const PostsCategories = () => {
             )}
           </Swiper>
         ) : (
-          <p className="pb-0 text-secondary">No categories to show</p>
+          <p className="mb-0 text-secondary">No categories to show</p>
         )}
       </section>
       <div className="ps-3">

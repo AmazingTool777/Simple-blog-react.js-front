@@ -8,26 +8,26 @@ import PostsCategories from "./PostsCategories";
 import usePosts from "./usePosts";
 
 const PostsPage = () => {
-	const { order, handleOrderChange, handleSearchChange, isLoading } = usePosts();
+  const { order, categoryId, handleOrderChange, handleSearchChange, handleCategoryIdChange, isLoading } = usePosts();
 
-	return (
-		<section id="posts-page">
-			<header className="mb-5">
-				<h1>
-					<FontAwesomeIcon icon="newspaper" className="me-2" />
-					Posts
-				</h1>
-				<hr />
-			</header>
-			<PostsParams
-				isDisabled={isLoading}
-				order={order}
-				onOrderChange={handleOrderChange}
-				onSearchSubmit={handleSearchChange}
-			/>
-			<PostsCategories />
-		</section>
-	);
+  return (
+    <section id="posts-page">
+      <header className="mb-5">
+        <h1>
+          <FontAwesomeIcon icon="newspaper" className="me-2" />
+          Posts
+        </h1>
+        <hr />
+      </header>
+      <PostsParams
+        isDisabled={isLoading}
+        order={order}
+        onOrderChange={handleOrderChange}
+        onSearchSubmit={handleSearchChange}
+      />
+      <PostsCategories isDisabled={isLoading} categoryId={categoryId} onCategoryIdSelect={handleCategoryIdChange} />
+    </section>
+  );
 };
 
 export default PostsPage;

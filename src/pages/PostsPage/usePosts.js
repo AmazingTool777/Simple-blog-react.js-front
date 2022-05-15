@@ -11,6 +11,7 @@ function usePosts() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [order, setOrder] = useState("desc");
+  const [categoryId, setCategoryId] = useState(null);
 
   const [posts, isLoading, count, pages] = usePaginatedApiCall(
     () => {
@@ -18,7 +19,7 @@ function usePosts() {
       return fetchPaginatedPosts(page, LIMIT, order, search);
     },
     null,
-    [page, search, order]
+    [page, search, order, categoryId]
   );
 
   return {
@@ -26,9 +27,11 @@ function usePosts() {
     page,
     order,
     search,
+    categoryId,
     handlePageChange: setPage,
     handleSearchChange: setSearch,
     handleOrderChange: setOrder,
+    handleCategoryIdChange: setCategoryId,
     isLoading,
     count,
     pages,
