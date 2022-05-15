@@ -8,27 +8,31 @@ import { fetchPaginatedPosts } from "../../apis/posts-api";
 
 // Custom hook for the posts data
 function usePosts() {
-	const [page, setPage] = useState(1);
-	const [search, setSearch] = useState("");
-	const [order, setOrder] = useState("desc");
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [order, setOrder] = useState("desc");
 
-	const [posts, isLoading, count, pages] = usePaginatedApiCall(() => {
-		const LIMIT = 12;
-		return fetchPaginatedPosts(page, LIMIT, order, search);
-	}, [page, search, order]);
+  const [posts, isLoading, count, pages] = usePaginatedApiCall(
+    () => {
+      const LIMIT = 12;
+      return fetchPaginatedPosts(page, LIMIT, order, search);
+    },
+    null,
+    [page, search, order]
+  );
 
-	return {
-		posts,
-		page,
-		order,
-		search,
-		handlePageChange: setPage,
-		handleSearchChange: setSearch,
-		handleOrderChange: setOrder,
-		isLoading,
-		count,
-		pages,
-	};
+  return {
+    posts,
+    page,
+    order,
+    search,
+    handlePageChange: setPage,
+    handleSearchChange: setSearch,
+    handleOrderChange: setOrder,
+    isLoading,
+    count,
+    pages,
+  };
 }
 
 export default usePosts;
