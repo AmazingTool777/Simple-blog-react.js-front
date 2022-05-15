@@ -13,6 +13,7 @@ const ACTIONS = {
   DATA_LOADING: "DATA_LOADING",
   DATA_FETCHED: "DATA_FETCHED",
   FETCH_ERROR: "FETCH_ERROR",
+  RESET: "RESET",
 };
 
 function reducer(state, action) {
@@ -34,6 +35,9 @@ function reducer(state, action) {
     case ACTIONS.FETCH_ERROR:
       return { ...state, isLoading: false, rows: [], error: action.payload.error };
 
+    case ACTIONS.RESET:
+      return { isLoading: false, rows: [], count: 0, pages: 1, error: null };
+
     default:
       new Error("Unknown dispatch action");
   }
@@ -43,6 +47,9 @@ function reducer(state, action) {
 function usePaginatedApiCall(apiCall, options, dependencies) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { rows, isLoading, count, pages, error } = state;
+
+  // Reset dispatcher method
+  const reset = () => dispatch({ type: ACTIONS.RESET });
 
   useEffect(() => {
     dispatch({ type: ACTIONS.DATA_LOADING });
@@ -60,7 +67,7 @@ function usePaginatedApiCall(apiCall, options, dependencies) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [...dependencies]);
 
-  return [rows, isLoading, count, pages, error];
+  return [rows, isLoading, count, pages, error, reset];
 }
 
 export default usePaginatedApiCall;
