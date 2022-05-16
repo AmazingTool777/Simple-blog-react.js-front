@@ -12,7 +12,7 @@ const PostsPreviewCard = ({ post }) => {
   return (
     <article>
       <Card onClick={() => navigate(`/posts/${post._id}`)} className="post-preview-card mb-4">
-        <Card.Img variant="top" src={post.photoURL} className="img-center" />
+        <Card.Img variant="top" src={post.photoURL} />
         <Card.Body>
           <Card.Title className="mb-3">{post.title}</Card.Title>
           <Card.Text className="text-primary mb-2">

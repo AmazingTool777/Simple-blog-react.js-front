@@ -1,14 +1,30 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Pagination from "react-responsive-pagination";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 // Components
 import PostsParams from "./PostsParams";
 import PostsCategories from "./PostsCategories";
+import PostsPreviewCard from "./PostPreviewCard";
 
 // Custom hooks
 import usePosts from "./usePosts";
 
 const PostsPage = () => {
-  const { order, categoryId, handleOrderChange, handleSearchChange, handleCategoryIdChange, isLoading } = usePosts();
+  const {
+    posts,
+    page,
+    order,
+    categoryId,
+    handlePageChange,
+    handleOrderChange,
+    handleSearchChange,
+    handleCategoryIdChange,
+    isLoading,
+    count,
+    pages,
+  } = usePosts();
 
   return (
     <section id="posts-page">
@@ -26,6 +42,42 @@ const PostsPage = () => {
         onSearchSubmit={handleSearchChange}
       />
       <PostsCategories isDisabled={isLoading} categoryId={categoryId} onCategoryIdSelect={handleCategoryIdChange} />
+      <section className="mt-4">
+        <p className="text-secondary">
+          <strong className="text-dark">{count}</strong> result{count > 1 && "s"}
+        </p>
+        <hr />
+        <nav className="mb-5">
+          <Pagination
+            extraClassName="justify-content-start"
+            currentPage={page}
+            total={pages}
+            onPageChange={handlePageChange}
+          />
+        </nav>
+        <div id="posts-previews-container">
+          <Row>
+            {posts.map((post) => (
+              <Col key={post._id} xs={12} md={6} lg={4} xlg={3}>
+                <PostsPreviewCard post={post} />
+              </Col>
+            ))}
+            {page >= pages && (
+              <Col xs={12}>
+                <p className="text-center text-secondary">End of results</p>
+              </Col>
+            )}
+          </Row>
+        </div>
+        <nav className="mt-5">
+          <Pagination
+            extraClassName="justify-content-start"
+            currentPage={page}
+            total={pages}
+            onPageChange={handlePageChange}
+          />
+        </nav>
+      </section>
     </section>
   );
 };
