@@ -10,8 +10,16 @@ import { fetchPaginatedCategories } from "../../apis/categories-api";
 function usePostsCategories(merge = false) {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  // A number of forced fetches
+  const [forceNb, setForceNb] = useState(1);
 
   const handlePageChange = (page) => setPage(page > pages ? pages : page);
+
+  // Forces to fetch the categories at page 1
+  const triggerInitialCategoriesFetch = () => {
+    setPage(1);
+    setForceNb(forceNb + 1);
+  };
 
   const [categories, isLoading, count, pages, error, reset] = usePaginatedApiCall(
     () => {
@@ -22,7 +30,7 @@ function usePostsCategories(merge = false) {
       merge,
       key: merge ? "_id" : null,
     },
-    [page, search]
+    [page, search, forceNb]
   );
 
   return {
@@ -36,6 +44,7 @@ function usePostsCategories(merge = false) {
     pages,
     error,
     resetCategories: reset,
+    triggerInitialCategoriesFetch,
   };
 }
 
