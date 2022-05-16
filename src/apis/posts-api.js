@@ -12,4 +12,11 @@ async function fetchPaginatedPosts(page = 1, limit = 12, order = "desc", search 
 		.then((response) => response.data);
 }
 
-export { fetchPaginatedPosts };
+// Fetches a post by id
+async function fetchPost(id) {
+	const URL = `${ENDPOINT}/${id}`;
+	const result = await axios.get(URL);
+	return result.data;
+}
+
+export { fetchPaginatedPosts, fetchPost };
