@@ -6,7 +6,8 @@ import Col from "react-bootstrap/Col";
 // Components
 import PostsParams from "./PostsParams";
 import PostsCategories from "./PostsCategories";
-import PostsPreviewCard from "./PostPreviewCard";
+import PostsPreviewCard, { PostPreviewCardLoaders } from "./PostPreviewCard";
+import { ResultsNumberLoader } from "./PostsPageLoaders";
 
 // Custom hooks
 import usePosts from "./usePosts";
@@ -43,9 +44,13 @@ const PostsPage = () => {
       />
       <PostsCategories isDisabled={isLoading} categoryId={categoryId} onCategoryIdSelect={handleCategoryIdChange} />
       <section className="mt-4">
-        <p className="text-secondary">
-          <strong className="text-dark">{count}</strong> result{count > 1 && "s"}
-        </p>
+        {isLoading ? (
+          <ResultsNumberLoader />
+        ) : (
+          <p className="text-secondary">
+            <strong className="text-dark">{count}</strong> result{count > 1 && "s"}
+          </p>
+        )}
         <hr />
         <nav className="mb-5">
           <Pagination
@@ -57,15 +62,23 @@ const PostsPage = () => {
         </nav>
         <div id="posts-previews-container">
           <Row>
-            {posts.map((post) => (
-              <Col key={post._id} xs={12} md={6} lg={4} xlg={3}>
-                <PostsPreviewCard post={post} />
+            {isLoading ? (
+              <Col xs={12} md={6} lg={4} xlg={3}>
+                <PostPreviewCardLoaders />
               </Col>
-            ))}
-            {page >= pages && (
-              <Col xs={12}>
-                <p className="text-center text-secondary">End of results</p>
-              </Col>
+            ) : (
+              <>
+                {posts.map((post) => (
+                  <Col key={post._id} xs={12} md={6} lg={4} xlg={3}>
+                    <PostsPreviewCard post={post} />
+                  </Col>
+                ))}
+                {page >= pages && (
+                  <Col xs={12}>
+                    <p className="text-center text-secondary">End of results</p>
+                  </Col>
+                )}
+              </>
             )}
           </Row>
         </div>
