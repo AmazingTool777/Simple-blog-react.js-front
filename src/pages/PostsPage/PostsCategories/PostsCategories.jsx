@@ -3,17 +3,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
-import Button from "react-bootstrap/Button";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // Styles
 import "./PostsCategories.css";
 
 // Components
 import CategoryBullet from "../CategoryBullet";
-import Loaders from "./PostsCategoriesLoaders.jsx";
+import Loaders from "./PostsCategoriesLoaders";
+import PostsCategoriesModal from "../PostsCategoriesModal";
 
 // Custom hooks
 import usePostsCategories from "../usePostsCategories";
@@ -69,11 +66,7 @@ const PostsCategories = ({ isDisabled, categoryId, onCategoryIdSelect }) => {
         )}
       </section>
       <div className="ps-3">
-        <OverlayTrigger placement="bottom" overlay={<Tooltip>View all categories</Tooltip>}>
-          <Button variant="light" className="text-primary">
-            <FontAwesomeIcon icon="eye" />
-          </Button>
-        </OverlayTrigger>
+        <PostsCategoriesModal categoryId={categoryId} onCategorySelect={onCategoryIdSelect} />
       </div>
     </section>
   );

@@ -1,0 +1,7 @@
+span#see-more-suggestions {
+  cursor: pointer;
+  transition: 0.3s;
+}
+span#see-more-suggestions:hover {
+  text-decoration: underline;
+}
