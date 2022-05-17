@@ -8,19 +8,24 @@ import MainContentLayout from "./components/MainContentLayout";
 import PostsPage from "./pages/PostsPage";
 import PostPage from "./pages/PostPage";
 
+// Styles
+import "./App.css";
+
 function App() {
   return (
     <IconsImports>
       <div className="App">
         <Router>
           <AppNavbar />
-          <MainContentLayout>
-            <Routes>
-              <Route path="/" element={<Navigate to="/posts" replace />} />
-              <Route path="/posts" element={<PostsPage />} />
-              <Route path="/posts/:postId" element={<PostPage />} />
-            </Routes>
-          </MainContentLayout>
+          <div id="pages-wrapper">
+            <MainContentLayout>
+              <Routes>
+                <Route path="/" element={<Navigate to="/posts" replace />} />
+                <Route path="/posts" element={<PostsPage />} />
+                <Route path="/posts/:postId" element={<PostPage />} />
+              </Routes>
+            </MainContentLayout>
+          </div>
         </Router>
       </div>
     </IconsImports>
