@@ -1,7 +1,11 @@
-const MainContentLayout = ({ children }) => {
+import { Outlet } from "react-router-dom";
+
+const MainContentLayout = () => {
   return (
     <div className="container pt-4 pb-5">
-      <main>{children}</main>
+      <main>
+        <Outlet />
+      </main>
     </div>
   );
 };

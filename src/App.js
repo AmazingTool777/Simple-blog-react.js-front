@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import IconsImports from "./components/IconsImports";
 import AppNavbar from "./components/AppNavbar";
 import MainContentLayout from "./components/MainContentLayout";
+import AuthPagesLayout from "./components/AuthPagesLayout";
 import PostsPage from "./pages/PostsPage";
 import PostPage from "./pages/PostPage";
 
@@ -18,13 +19,14 @@ function App() {
         <Router>
           <AppNavbar />
           <div id="pages-wrapper">
-            <MainContentLayout>
-              <Routes>
-                <Route path="/" element={<Navigate to="/posts" replace />} />
+            <Routes>
+              <Route path="/" element={<MainContentLayout />}>
+                <Route index element={<Navigate to="/posts" replace />} />
                 <Route path="/posts" element={<PostsPage />} />
                 <Route path="/posts/:postId" element={<PostPage />} />
-              </Routes>
-            </MainContentLayout>
+              </Route>
+              <Route path="/auth/*" element={<AuthPagesLayout />}></Route>
+            </Routes>
           </div>
         </Router>
       </div>

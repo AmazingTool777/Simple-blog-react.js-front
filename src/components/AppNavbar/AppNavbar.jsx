@@ -24,12 +24,12 @@ const AppNavbar = () => {
               Users
             </Nav.Link>
             <NavDropdown title="Authentication">
-              <NavDropdown.Item as={NavLink} to="/signup">
+              <NavDropdown.Item as={NavLink} to="/auth/signup">
                 <FontAwesomeIcon icon="user-plus" className="me-2" />
                 Sign up
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item as={NavLink} to="/signup">
+              <NavDropdown.Item as={NavLink} to="/auth/login">
                 <FontAwesomeIcon icon="lock" className="me-2" />
                 Log in
               </NavDropdown.Item>
