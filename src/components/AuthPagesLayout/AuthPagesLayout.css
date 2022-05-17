@@ -1,0 +1,4 @@
+#auth-pages-layout {
+  width: 100%;
+  min-height: calc(100vh - 56px); /* 56px: height of the navbar */
+}
