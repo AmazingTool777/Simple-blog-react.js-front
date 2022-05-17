@@ -15,7 +15,7 @@ import "./PostsCategoriesModal.css";
 import usePostsCategories from "../usePostsCategories";
 
 // Components
-import CategoryBullet from "../CategoryBullet";
+import CategoryBullet from "../../../components/CategoryBullet";
 
 const PostsCategoriesModal = ({ categoryId = null, onCategorySelect = () => {} }) => {
   const [show, setShow] = useState(false);

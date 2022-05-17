@@ -8,7 +8,7 @@ import "swiper/css/navigation";
 import "./PostsCategories.css";
 
 // Components
-import CategoryBullet from "../CategoryBullet";
+import CategoryBullet from "../../../components/CategoryBullet";
 import Loaders from "./PostsCategoriesLoaders";
 import PostsCategoriesModal from "../PostsCategoriesModal";
 
