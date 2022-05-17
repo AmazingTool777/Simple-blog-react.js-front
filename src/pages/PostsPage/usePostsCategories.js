@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 // Other custom hooks
 import usePaginatedApiCall from "../../hooks/usePaginatedApiCall";
+import useCheckIfUpdated from "../../hooks/useCheckIfUpdated";
 
 // Categories api call
 import { fetchPaginatedCategories } from "../../apis/categories-api";
@@ -17,6 +18,8 @@ function usePostsCategories(merge = false) {
 
   const handleSearchChange = (e) => setSearch(e.target.value);
 
+  const isUpdated = useCheckIfUpdated();
+
   // Forces to fetch the categories at page 1
   const triggerInitialCategoriesFetch = () => {
     setPage(1);
@@ -24,10 +27,12 @@ function usePostsCategories(merge = false) {
   };
 
   useEffect(() => {
-    reset();
-    triggerInitialCategoriesFetch();
+    if (isUpdated) {
+      reset();
+      triggerInitialCategoriesFetch();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
+  }, [search, isUpdated]);
 
   const [categories, isLoading, count, pages, error, reset] = usePaginatedApiCall(
     () => {
