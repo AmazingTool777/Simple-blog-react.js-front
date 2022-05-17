@@ -1,0 +1,42 @@
+#signup-page {
+  display: flex;
+  flex-wrap: nowrap;
+  min-height: 100%;
+  background-image: linear-gradient(to bottom right, #ddd, #fcfcfc, #ddd, #fcfcfc);
+}
+
+#signup-page > * {
+  width: 100%;
+}
+
+#signup-page .illustration-section {
+  display: none;
+}
+
+#signup-page .form-section {
+  min-height: 100%;
+  position: relative;
+}
+
+#signup-page .form-container {
+  width: calc(100% - 2rem);
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 350px;
+}
+
+@media screen and (min-width: 992px) {
+  #signup-page > .illustration-section {
+    width: 60%;
+  }
+
+  #signup-page > .form-section {
+    width: 40%;
+  }
+
+  #signup-page .illustration-section {
+    display: flex;
+  }
+}
