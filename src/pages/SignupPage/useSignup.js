@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -28,9 +28,34 @@ const validationSchema = Yup.object({
 function useSignup() {
   const [step, setStep] = useState(1);
 
-  const { values, errors, touched, handleChange } = useFormik({ initialValues, validationSchema });
+  // Handles the submission of the fields' data after validation
+  const handleSubmit = useCallback((values) => {
+    console.log(values);
+  }, []);
 
-  return { step, values, touched, errors, handleChange, handleStepChange: setStep };
+  const {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleSubmit: handleFormSubmit,
+  } = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: handleSubmit,
+  });
+
+  return {
+    step,
+    values,
+    touched,
+    errors,
+    handleChange,
+    handleBlur,
+    handleFormSubmit,
+    handleStepChange: setStep,
+  };
 }
 
 export default useSignup;

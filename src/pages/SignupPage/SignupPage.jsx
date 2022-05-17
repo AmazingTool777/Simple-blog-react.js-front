@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
@@ -9,6 +10,7 @@ import "./SignupPage.css";
 
 // Illustration
 import { ReactComponent as WelcomeIllustration } from "../../assets/images/undraw_welcome_cats_thqn.svg";
+
 // Custom hooks
 import useSignup from "./useSignup";
 
@@ -16,7 +18,13 @@ import useSignup from "./useSignup";
 import StepIndicators from "./StepIndicators";
 
 const SignupPage = () => {
-  const { step, values, handleChange, handleStepChange } = useSignup();
+  const { step, values, touched, errors, handleChange, handleBlur, handleFormSubmit, handleStepChange } = useSignup();
+
+  // Checks if step 1 has errors
+  const step1HasErrors = useMemo(() => Boolean(errors.firstName || errors.lastName || errors.gender), [errors]);
+
+  // Checks if one of step 1 fields has been touched
+  const step1IsTouched = useMemo(() => Boolean(touched.firstName || touched.lastName || touched.gender), [touched]);
 
   return (
     <section id="signup-page">
@@ -24,7 +32,7 @@ const SignupPage = () => {
         <div className="form-container shadow bg-white px-3 py-4">
           <h1 className="text-center mb-4">Sign up</h1>
           <StepIndicators step={step} />
-          <Form id="signup" className="mt-4">
+          <Form id="signup" className="mt-4" onSubmit={handleFormSubmit}>
             {step === 1 && (
               <>
                 <FloatingLabel controlId="user-firstname" label="First name" className="mb-3">
@@ -33,8 +41,11 @@ const SignupPage = () => {
                     name="firstName"
                     placeholder="First name"
                     value={values.firstName}
+                    isInvalid={!!errors.firstName && touched.firstName}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                   />
+                  <Form.Control.Feedback type="invalid">{errors.firstName}</Form.Control.Feedback>
                 </FloatingLabel>
                 <FloatingLabel controlId="user-lastname" label="Last name" className="mb-3">
                   <Form.Control
@@ -42,10 +53,13 @@ const SignupPage = () => {
                     name="lastName"
                     placeholder="Last name"
                     value={values.lastName}
+                    isInvalid={!!errors.lastName && touched.lastName}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                   />
+                  <Form.Control.Feedback type="invalid">{errors.lastName}</Form.Control.Feedback>
                 </FloatingLabel>
-                <div>
+                <Form.Group>
                   <span className="me-3 text-muted">Gender:</span>
                   <Form.Check
                     custom="true"
@@ -56,7 +70,11 @@ const SignupPage = () => {
                     label="Male"
                     value="M"
                     checked={values.gender === "M"}
+                    isInvalid={!!errors.gender && touched.gender}
+                    feedback={errors.gender}
+                    feedbackTooltip
                     onChange={handleChange}
+                    onBlur={handleBlur}
                   />
                   <Form.Check
                     custom="true"
@@ -67,9 +85,13 @@ const SignupPage = () => {
                     label="Female"
                     value="F"
                     checked={values.gender === "F"}
+                    isInvalid={!!errors.gender && touched.gender}
+                    feedback={errors.gender}
+                    feedbackTooltip
                     onChange={handleChange}
+                    onBlur={handleBlur}
                   />
-                </div>
+                </Form.Group>
               </>
             )}
             {step === 2 && (
@@ -80,8 +102,11 @@ const SignupPage = () => {
                     name="email"
                     placeholder="E-mail"
                     value={values.email}
+                    isInvalid={!!errors.email && touched.email}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                   />
+                  <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                 </FloatingLabel>
                 <FloatingLabel controlId="user-password" label="Password" className="mb-3">
                   <Form.Control
@@ -89,8 +114,11 @@ const SignupPage = () => {
                     name="password"
                     placeholder="Password"
                     value={values.password}
+                    isInvalid={!!errors.password && touched.password}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                   />
+                  <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
                 </FloatingLabel>
                 <FloatingLabel controlId="user-password-confirmation" label="Password confirmation" className="mb-3">
                   <Form.Control
@@ -98,8 +126,11 @@ const SignupPage = () => {
                     name="passwordConfirmation"
                     placeholder="Password confirmation"
                     value={values.passwordConfirmation}
+                    isInvalid={!!errors.passwordConfirmation && touched.passwordConfirmation}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                   />
+                  <Form.Control.Feedback type="invalid">{errors.passwordConfirmation}</Form.Control.Feedback>
                 </FloatingLabel>
               </>
             )}
@@ -114,7 +145,12 @@ const SignupPage = () => {
                 Previous
               </Button>
               {step === 1 && (
-                <Button type="button" variant="primary" onClick={() => handleStepChange(step + 1)}>
+                <Button
+                  type="buttom"
+                  disabled={!step1IsTouched || step1HasErrors}
+                  variant="primary"
+                  onClick={() => handleStepChange(step + 1)}
+                >
                   Next
                   <FontAwesomeIcon icon="angle-right" className="ms-2" />
                 </Button>
