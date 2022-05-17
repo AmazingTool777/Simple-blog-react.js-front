@@ -16,7 +16,7 @@ import useSignup from "./useSignup";
 import StepIndicators from "./StepIndicators";
 
 const SignupPage = () => {
-  const { step, handleStepChange } = useSignup();
+  const { step, values, handleChange, handleStepChange } = useSignup();
 
   return (
     <section id="signup-page">
@@ -28,21 +28,46 @@ const SignupPage = () => {
             {step === 1 && (
               <>
                 <FloatingLabel controlId="user-firstname" label="First name" className="mb-3">
-                  <Form.Control type="text" placeholder="First name" />
+                  <Form.Control
+                    type="text"
+                    name="firstName"
+                    placeholder="First name"
+                    value={values.firstName}
+                    onChange={handleChange}
+                  />
                 </FloatingLabel>
                 <FloatingLabel controlId="user-lastname" label="Last name" className="mb-3">
-                  <Form.Control type="text" placeholder="Last name" />
+                  <Form.Control
+                    type="text"
+                    name="lastName"
+                    placeholder="Last name"
+                    value={values.lastName}
+                    onChange={handleChange}
+                  />
                 </FloatingLabel>
                 <div>
                   <span className="me-3 text-muted">Gender:</span>
-                  <Form.Check custom="true" inline type="radio" id="user-gender-male" name="user-gender" label="Male" />
+                  <Form.Check
+                    custom="true"
+                    inline
+                    type="radio"
+                    id="user-gender-male"
+                    name="gender"
+                    label="Male"
+                    value="M"
+                    checked={values.gender === "M"}
+                    onChange={handleChange}
+                  />
                   <Form.Check
                     custom="true"
                     inline
                     type="radio"
                     id="user-gender-female"
-                    name="user-gender"
+                    name="gender"
                     label="Female"
+                    value="F"
+                    checked={values.gender === "F"}
+                    onChange={handleChange}
                   />
                 </div>
               </>
@@ -50,13 +75,31 @@ const SignupPage = () => {
             {step === 2 && (
               <>
                 <FloatingLabel controlId="user-email" label="E-mail" className="mb-3">
-                  <Form.Control type="email" placeholder="E-mail" />
+                  <Form.Control
+                    type="email"
+                    name="email"
+                    placeholder="E-mail"
+                    value={values.email}
+                    onChange={handleChange}
+                  />
                 </FloatingLabel>
                 <FloatingLabel controlId="user-password" label="Password" className="mb-3">
-                  <Form.Control type="password" placeholder="Password" />
+                  <Form.Control
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    value={values.password}
+                    onChange={handleChange}
+                  />
                 </FloatingLabel>
                 <FloatingLabel controlId="user-password-confirmation" label="Password confirmation" className="mb-3">
-                  <Form.Control type="password" placeholder="Password confirmation" />
+                  <Form.Control
+                    type="password"
+                    name="passwordConfirmation"
+                    placeholder="Password confirmation"
+                    value={values.passwordConfirmation}
+                    onChange={handleChange}
+                  />
                 </FloatingLabel>
               </>
             )}
