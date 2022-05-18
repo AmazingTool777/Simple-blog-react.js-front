@@ -5,12 +5,15 @@ import apiConfig from "../configs/api-config";
 async function signupUser(signupData) {
 	const ENDPOINT = `${apiConfig.URL}/signup`;
 	const response = (await axios.post(ENDPOINT, signupData)).data;
-
-	// Storing the tokens
-	localStorage.setItem("access-token", response.accessToken);
-	localStorage.setItem("refresh-token", response.refreshToken);
-
+	localStorage.setItem("access-token", response.token); // Storing the tokens
 	return response.user;
 }
 
-export { signupUser };
+// Authenticates a user from the access-token
+async function authenticateUserFromToken() {
+	const ENDPOINT = `${apiConfig.URL}/tokenUser`;
+	const token = localStorage.getItem("access-token");
+	return (await axios.get(ENDPOINT, { headers: { Authorization: `Bearer ${token}` } })).data;
+}
+
+export { signupUser, authenticateUserFromToken };
