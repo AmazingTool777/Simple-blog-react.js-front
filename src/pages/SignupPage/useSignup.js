@@ -1,9 +1,13 @@
-import { useState /* , useEffect */, useCallback } from "react";
+import { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
 // API calls
 import { signupUser } from "../../apis/users-api";
+
+// Other custom hooks
+import useCurrentUser from "../../hooks/useCurrentUser";
 
 // Initial fields values
 const initialValues = {
@@ -30,20 +34,30 @@ const validationSchema = Yup.object({
 // Custom hook for the signup page
 function useSignup() {
 	const [step, setStep] = useState(1);
-	const [isSubmitting, setSubmitting] = useState(false);
-	// const [apiErrors, setApiErrors] = useState({});
+	const [isApiSubmitting, setApiSubmitting] = useState(false);
+
+	const { setCurrentUser } = useCurrentUser();
+
+	const navigate = useNavigate();
 
 	// Handles the submission of the fields' data after validation
-	const handleSubmit = useCallback(async (values) => {
-		setSubmitting(true);
-		try {
-			const signedUpUser = await signupUser(values);
-			console.log(signedUpUser);
-		} catch (error) {
-			setSubmitting(false);
-			console.log(error);
-		}
-	}, []);
+	const handleSubmit = useCallback(
+		async (values, { setSubmitting }) => {
+			setSubmitting(true);
+			setApiSubmitting(true);
+			try {
+				const signedUpUser = await signupUser(values);
+				// Setting the newly signed up user as the current logged in user
+				setCurrentUser(signedUpUser);
+				// Redirection to the current user's personal space page
+				navigate("/personal-space");
+			} catch (error) {
+				setApiSubmitting(false);
+				setSubmitting(false);
+			}
+		},
+		[setCurrentUser, navigate]
+	);
 
 	const {
 		values,
@@ -52,6 +66,7 @@ function useSignup() {
 		handleChange,
 		handleBlur,
 		handleSubmit: handleFormSubmit,
+		isSubmitting,
 	} = useFormik({
 		initialValues,
 		validationSchema,
@@ -66,7 +81,7 @@ function useSignup() {
 		handleChange,
 		handleBlur,
 		handleFormSubmit,
-		isSubmitting,
+		isSubmitting: isSubmitting || isApiSubmitting,
 		handleStepChange: setStep,
 	};
 }
