@@ -76,7 +76,7 @@ const PostPage = () => {
             {post.categories.length > 0 ? (
               <ul className="list-unstyled d-flex flex-wrap">
                 {post.categories.map((category) => (
-                  <li key={category._id} className="me-3">
+                  <li key={category._id} className="me-3 mb-2">
                     <CategoryBullet isActive={true} category={category} />
                   </li>
                 ))}

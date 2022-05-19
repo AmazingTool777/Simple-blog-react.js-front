@@ -2,6 +2,7 @@
   border-radius: 1.5rem;
   cursor: pointer;
   transition: 0.3s;
+  display: inline-block;
 }
 .category-bullet.disabled {
   opacity: 0.5;
