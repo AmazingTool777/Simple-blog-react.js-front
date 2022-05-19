@@ -1,0 +1,33 @@
+#signin-page {
+  width: 100%;
+  min-height: 100%;
+}
+
+#signin-page > section {
+  min-height: 100%;
+}
+
+#signin-page section.illustration-section {
+  display: none;
+}
+
+#signin-page section.form-section {
+  width: 100%;
+}
+
+#signin-page .form-wrapper {
+  width: 100%;
+  max-width: 350px;
+  background-color: #fff;
+  box-shadow: 4px 4px 8px #ddd;
+}
+
+@media screen and (min-width: 992px) {
+  #signin-page > section {
+    width: 50%;
+  }
+
+  #signin-page section.illustration-section {
+    display: flex;
+  }
+}

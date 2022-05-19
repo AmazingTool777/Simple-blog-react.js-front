@@ -2,7 +2,6 @@
   display: flex;
   flex-wrap: nowrap;
   min-height: 100%;
-  background-image: linear-gradient(to bottom right, #ddd, #fcfcfc, #ddd, #fcfcfc);
 }
 
 #signup-page > * {

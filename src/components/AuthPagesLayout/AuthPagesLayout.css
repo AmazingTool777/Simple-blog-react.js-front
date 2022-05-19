@@ -5,4 +5,5 @@
   position: absolute;
   top: 0;
   left: 0;
+  background-image: linear-gradient(to bottom right, #ddd, #fcfcfc, #ddd, #fcfcfc);
 }
