@@ -15,6 +15,7 @@ import usePost from "./usePost";
 // Components
 import UserAvatar from "../../components/UserAvatar";
 import CategoryBullet from "../../components/CategoryBullet";
+import PostPageLoaders, { PostTitleLoader } from "./PostPageLoaders";
 
 const PostPage = () => {
   const { postId } = useParams();
@@ -39,17 +40,16 @@ const PostPage = () => {
           <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/posts" }}>
             Posts
           </Breadcrumb.Item>
-          {!isLoading && post && (
-            <Breadcrumb.Item
-              linkAs={"strong"}
-              active={false}
-              linkProps={{ className: "text-decoration-none text-dark" }}
-            >
-              {post.title}
-            </Breadcrumb.Item>
-          )}
+          <Breadcrumb.Item
+            linkAs={post ? "strong" : "em"}
+            active={false}
+            linkProps={{ className: `text-decoration-none text-${post ? "dark" : "secondary"}` }}
+          >
+            {isLoading ? <PostTitleLoader /> : post ? post.title : "Post not found"}
+          </Breadcrumb.Item>
         </Breadcrumb>
       </nav>
+      {isLoading && <PostPageLoaders />}
       {!isLoading && post && (
         <article id="post-article" className="pt-4">
           <h1 className="mb-4 text-center">{post.title}</h1>
