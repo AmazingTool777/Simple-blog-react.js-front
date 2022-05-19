@@ -14,6 +14,7 @@ import AuthPagesLayout from "./components/AuthPagesLayout";
 import PostsPage from "./pages/PostsPage";
 import PostPage from "./pages/PostPage";
 import SignupPage from "./pages/SignupPage";
+import SigninPage from "./pages/SigninPage";
 
 // Styles
 import "./App.css";
@@ -39,6 +40,7 @@ function App() {
                       </Route>
                       <Route path="/auth/*" element={<AuthPagesLayout />}>
                         <Route path="signup" element={<SignupPage />} />
+                        <Route path="login" element={<SigninPage />} />
                       </Route>
                     </Routes>
                   </div>
