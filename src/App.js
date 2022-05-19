@@ -7,6 +7,7 @@ import currentUserContext from "./contexts/currentUser-context";
 // Components
 import AppPreloader from "./components/AppPreloader";
 import CurrentUserProvider from "./components/CurrentUserProvider";
+import ProtectedRoute from "./components/ProtectedRoute";
 import IconsImports from "./components/IconsImports";
 import AppNavbar from "./components/AppNavbar";
 import MainContentLayout from "./components/MainContentLayout";
@@ -38,7 +39,14 @@ function App() {
                         <Route path="/posts" element={<PostsPage />} />
                         <Route path="/posts/:postId" element={<PostPage />} />
                       </Route>
-                      <Route path="/auth/*" element={<AuthPagesLayout />}>
+                      <Route
+                        path="/auth/*"
+                        element={
+                          <ProtectedRoute reverse={true}>
+                            <AuthPagesLayout />
+                          </ProtectedRoute>
+                        }
+                      >
                         <Route path="signup" element={<SignupPage />} />
                         <Route path="login" element={<SigninPage />} />
                       </Route>
