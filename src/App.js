@@ -16,6 +16,7 @@ import PostsPage from "./pages/PostsPage";
 import PostPage from "./pages/PostPage";
 import SignupPage from "./pages/SignupPage";
 import SigninPage from "./pages/SigninPage";
+import AddPostPage from "./pages/AddPostPage";
 
 // Styles
 import "./App.css";
@@ -50,6 +51,14 @@ function App() {
                         <Route path="signup" element={<SignupPage />} />
                         <Route path="login" element={<SigninPage />} />
                       </Route>
+                      <Route
+                        path="/add-post"
+                        element={
+                          <ProtectedRoute>
+                            <AddPostPage />
+                          </ProtectedRoute>
+                        }
+                      />
                     </Routes>
                   </div>
                 </div>
