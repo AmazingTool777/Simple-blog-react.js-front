@@ -1,7 +1,11 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+// Contexts
+import currentUserContext from "./contexts/currentUser-context";
+
 // Components
+import AppPreloader from "./components/AppPreloader";
 import CurrentUserProvider from "./components/CurrentUserProvider";
 import IconsImports from "./components/IconsImports";
 import AppNavbar from "./components/AppNavbar";
@@ -15,29 +19,37 @@ import SignupPage from "./pages/SignupPage";
 import "./App.css";
 
 function App() {
-	return (
-		<div className="App">
-			<IconsImports>
-				<CurrentUserProvider>
-					<Router>
-						<AppNavbar />
-						<div id="pages-wrapper">
-							<Routes>
-								<Route path="/" element={<MainContentLayout />}>
-									<Route index element={<Navigate to="/posts" replace />} />
-									<Route path="/posts" element={<PostsPage />} />
-									<Route path="/posts/:postId" element={<PostPage />} />
-								</Route>
-								<Route path="/auth/*" element={<AuthPagesLayout />}>
-									<Route path="signup" element={<SignupPage />} />
-								</Route>
-							</Routes>
-						</div>
-					</Router>
-				</CurrentUserProvider>
-			</IconsImports>
-		</div>
-	);
+  return (
+    <CurrentUserProvider>
+      <currentUserContext.Consumer>
+        {({ initialSetupIsDone }) =>
+          !initialSetupIsDone ? (
+            <AppPreloader />
+          ) : (
+            <IconsImports>
+              <Router>
+                <div className="App">
+                  <AppNavbar />
+                  <div id="pages-wrapper">
+                    <Routes>
+                      <Route path="/" element={<MainContentLayout />}>
+                        <Route index element={<Navigate to="/posts" replace />} />
+                        <Route path="/posts" element={<PostsPage />} />
+                        <Route path="/posts/:postId" element={<PostPage />} />
+                      </Route>
+                      <Route path="/auth/*" element={<AuthPagesLayout />}>
+                        <Route path="signup" element={<SignupPage />} />
+                      </Route>
+                    </Routes>
+                  </div>
+                </div>
+              </Router>
+            </IconsImports>
+          )
+        }
+      </currentUserContext.Consumer>
+    </CurrentUserProvider>
+  );
 }
 
 export default App;
