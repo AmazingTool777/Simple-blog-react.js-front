@@ -15,6 +15,7 @@ import {
   faUser,
   faAngleRight,
   faAngleLeft,
+  faFileImage,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -32,7 +33,8 @@ library.add(
   faPenAlt,
   faUser,
   faAngleRight,
-  faAngleLeft
+  faAngleLeft,
+  faFileImage
 );
 
 const IconsImports = ({ children }) => {
