@@ -1,6 +1,10 @@
-import { useCallback } from "react";
+import { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+
+// API calls
+import { addPost } from "../../apis/posts-api";
 
 // Initial values for the post fields
 const initialValues = {
@@ -36,12 +40,42 @@ const validationSchema = Yup.object({
 
 // Custom for the add post page
 function useAddPost() {
-  // Handles the submission of the post data to the API after validation
-  const handleApiSubmit = useCallback(async (postData) => {
-    console.log(postData);
-  }, []);
+  const [progressShow, setProgressShow] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
-  const { values, touched, errors, handleChange, handleBlur, handleSubmit, setFieldValue } = useFormik({
+  const navigate = useNavigate();
+
+  // Handles the progress of the upload
+  const handleUploadProgress = useCallback((percentage) => setUploadProgress(percentage), []);
+
+  // Handles the submission of the post data to the API after validation
+  const handleApiSubmit = useCallback(
+    async (values, { setSubmitting }) => {
+      try {
+        // Formatting the correct data to send to the API
+        const postData = new FormData();
+        postData.append("photo", values.photo);
+        postData.append("title", values.title);
+        postData.append("content", values.content);
+        values.categories.forEach((category) => postData.append("categories[]", category._id));
+        values.newCategories.forEach((category) => postData.append("newCategories[]", category.label));
+        // Uploading
+        setProgressShow(true);
+        setSubmitting(true);
+        await addPost(postData, handleUploadProgress);
+        setProgressShow(false);
+        // Redirection
+        navigate("/posts");
+      } catch (error) {
+        console.log(error);
+        setProgressShow(false);
+        setSubmitting(false);
+      }
+    },
+    [handleUploadProgress, navigate]
+  );
+
+  const { values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit, setFieldValue } = useFormik({
     initialValues,
     validationSchema,
     onSubmit: handleApiSubmit,
@@ -93,6 +127,9 @@ function useAddPost() {
     values,
     touched,
     errors,
+    isSubmitting,
+    progressShow,
+    uploadProgress,
     handleChange,
     handlePhotoChange,
     handleCategoriesChange,

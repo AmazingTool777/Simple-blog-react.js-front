@@ -11,6 +11,7 @@ import useCategoriesFields from "./useCategoriesFields";
 import CategorySelectBullet from "../../../components/CategorySelectBullet";
 
 const CategoriesFields = ({
+  isDisabled,
   error,
   isTouched,
   newCategories,
@@ -48,6 +49,7 @@ const CategoriesFields = ({
         <AsyncSelect
           isMulti
           isClearable
+          isDisabled={isDisabled}
           id="posts-categories-select"
           placeholder="Select a category"
           styles={{ control: controlStylesFn }}
@@ -67,6 +69,7 @@ const CategoriesFields = ({
           name="categories"
           value={newCategoryLabel}
           isInvalid={!!error && isTouched}
+          disabled={isDisabled}
           onChange={(e) => setNewCategoryLabel(e.target.value)}
           onBlur={onBlur}
         />

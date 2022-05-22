@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // Styles
@@ -13,6 +14,7 @@ import useAddPost from "./useAddPost";
 // Components
 import PhotoPreview from "../../components/PhotoPreview";
 import CategoriesFields from "./CategoriesFields";
+import UploadToast from "./UploadToast";
 
 const AddPostPage = () => {
   const photoRef = useRef(null);
@@ -21,6 +23,9 @@ const AddPostPage = () => {
     values,
     touched,
     errors,
+    isSubmitting,
+    progressShow,
+    uploadProgress,
     handleChange,
     handlePhotoChange,
     handleCategoriesChange,
@@ -54,6 +59,7 @@ const AddPostPage = () => {
                 name="title"
                 value={values.title}
                 isInvalid={!!errors.title && touched.title}
+                disabled={isSubmitting}
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
@@ -63,7 +69,7 @@ const AddPostPage = () => {
               <Form.Label>Photo</Form.Label>
               <PhotoPreview ref={photoRef} name="photo" isOpen={true} onFileChange={handlePhotoChange}>
                 <div className="post-photo-options mb-2">
-                  <PhotoPreview.Trigger as={Button} variant="light" className="me-3">
+                  <PhotoPreview.Trigger as={Button} disabled={isSubmitting} variant="light" className="me-3">
                     <FontAwesomeIcon icon="file-image" className="me-2" />
                     Pick a photo
                   </PhotoPreview.Trigger>
@@ -84,6 +90,7 @@ const AddPostPage = () => {
                   placeholder="Content of the post"
                   name="content"
                   value={values.content}
+                  disabled={isSubmitting}
                   isInvalid={!!errors.content && touched.content}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -91,6 +98,7 @@ const AddPostPage = () => {
                 <Form.Control.Feedback type="invalid">{errors.content}</Form.Control.Feedback>
               </Form.Group>
               <CategoriesFields
+                isDisabled={isSubmitting}
                 newCategories={values.newCategories}
                 error={errors.categories}
                 isTouched={touched.categories}
@@ -100,10 +108,11 @@ const AddPostPage = () => {
                 onBlur={handleBlur}
               />
               <div className="mt-5">
-                <Button type="submit" variant="primary" className="me-3">
+                <Button disabled={isSubmitting} type="submit" variant="primary" className="me-3">
                   Create
+                  {isSubmitting && <Spinner animation="border" size="sm" variant="light" className="ms-2" />}
                 </Button>
-                <Button type="reset" variant="outline-secondary">
+                <Button disabled={isSubmitting} type="reset" variant="outline-secondary">
                   Reset
                 </Button>
               </div>
@@ -111,6 +120,7 @@ const AddPostPage = () => {
           </Form>
         </div>
       </div>
+      <UploadToast show={progressShow} percentage={uploadProgress} />
     </section>
   );
 };
