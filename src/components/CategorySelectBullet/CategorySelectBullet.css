@@ -1,0 +1,19 @@
+.category-select-bullet {
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.category-select-bullet .label {
+  font-weight: 600;
+}
+
+.category-select-bullet .delete {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: rgba(225, 225, 225);
+  cursor: pointer;
+  transition: 0.3s;
+}
+.category-select-bullet .delete:hover {
+  color: rgba(255, 0, 0);
+}
