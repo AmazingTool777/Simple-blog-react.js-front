@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useMemo, useContext, createElement } from "react";
+import { useState, useCallback, useMemo, useContext, createElement, forwardRef } from "react";
 
 // Styles
 import "./PhotoPreview.css";
@@ -7,49 +7,52 @@ import "./PhotoPreview.css";
 import photoPreviewContext from "../../contexts/photoPreview-context";
 
 // Provider of the photo preview context values
-const PhotoPreview = ({ isOpen = false, onFileChange = () => {}, onClose = () => {}, children }) => {
-  const fileBtnRef = useRef(null);
+const PhotoPreview = forwardRef(
+  ({ isOpen = false, name = "photo", onFileChange = () => {}, onClose = () => {}, children }, ref) => {
+    const [previewSrc, setPreviewSrc] = useState("");
 
-  const [previewSrc, setPreviewSrc] = useState("");
+    // Opens or closes the photo preview
+    const handleClose = useCallback(() => {
+      ref.current.value = "";
+      setPreviewSrc("");
+      onClose();
+    }, [onClose, ref]);
 
-  // Opens or closes the photo preview
-  const handleClose = useCallback(() => {
-    fileBtnRef.current.value = "";
-    setPreviewSrc("");
-    onClose();
-  }, [onClose]);
+    // Handles the click of the file input pick triggerer
+    const handleTriggerClick = useCallback(() => ref.current.click(), [ref]);
 
-  // Handles the click of the file input pick triggerer
-  const handleTriggerClick = useCallback(() => fileBtnRef.current.click(), []);
+    // Handles the change of the file
+    const handleFileChange = useCallback(
+      (e) => {
+        const file = ref.current.files[0];
+        onFileChange(e);
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => setPreviewSrc(reader.result);
+      },
+      [onFileChange, ref]
+    );
 
-  // Handles the change of the file
-  const handleFileChange = useCallback(() => {
-    const file = fileBtnRef.current.files[0];
-    onFileChange(file);
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => setPreviewSrc(reader.result);
-  }, [onFileChange]);
+    const contextValues = useMemo(
+      () => ({
+        isOpen,
+        previewSrc,
+        file: ref.current && ref.current.files.length > 0 && ref.current.files[0],
+        handleClose,
+        handleFileChange,
+        handleTriggerClick,
+      }),
+      [isOpen, previewSrc, handleClose, handleFileChange, handleTriggerClick, ref]
+    );
 
-  const contextValues = useMemo(
-    () => ({
-      isOpen,
-      previewSrc,
-      file: fileBtnRef.current && fileBtnRef.current.files.length > 0 && fileBtnRef.current.files[0],
-      handleClose,
-      handleFileChange,
-      handleTriggerClick,
-    }),
-    [isOpen, previewSrc, handleClose, handleFileChange, handleTriggerClick]
-  );
-
-  return (
-    <photoPreviewContext.Provider value={contextValues}>
-      <input ref={fileBtnRef} type="file" style={{ display: "none" }} onChange={handleFileChange} />
-      {children}
-    </photoPreviewContext.Provider>
-  );
-};
+    return (
+      <photoPreviewContext.Provider value={contextValues}>
+        <input ref={ref} type="file" name={name} style={{ display: "none" }} onChange={handleFileChange} />
+        {children}
+      </photoPreviewContext.Provider>
+    );
+  }
+);
 
 // Component for the actual preview element
 const Preview = ({ src, className }) => {
