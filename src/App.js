@@ -12,6 +12,7 @@ import IconsImports from "./components/IconsImports";
 import AppNavbar from "./components/AppNavbar";
 import MainContentLayout from "./components/MainContentLayout";
 import AuthPagesLayout from "./components/AuthPagesLayout";
+import TestPage from "./pages/TestPage";
 import PostsPage from "./pages/PostsPage";
 import PostPage from "./pages/PostPage";
 import SignupPage from "./pages/SignupPage";
@@ -59,6 +60,7 @@ function App() {
                           </ProtectedRoute>
                         }
                       />
+                      <Route path="/test" element={<TestPage />} />
                     </Routes>
                   </div>
                 </div>
