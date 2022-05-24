@@ -8,6 +8,7 @@ import currentUserContext from "./contexts/currentUser-context";
 import AppPreloader from "./components/AppPreloader";
 import CurrentUserProvider from "./components/CurrentUserProvider";
 import ToastsProvider from "./components/ToastsProvider";
+import NotificationsToasts from "./components/NotificationsToasts";
 import ProtectedRoute from "./components/ProtectedRoute";
 import IconsImports from "./components/IconsImports";
 import AppNavbar from "./components/AppNavbar";
@@ -64,6 +65,7 @@ function App() {
                         />
                         <Route path="/test" element={<TestPage />} />
                       </Routes>
+                      <NotificationsToasts />
                     </div>
                   </div>
                 </Router>
