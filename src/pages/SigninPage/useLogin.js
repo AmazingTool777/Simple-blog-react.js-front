@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -27,6 +27,10 @@ function useLogin() {
 
   const navigate = useNavigate();
 
+  const { state } = useLocation();
+  // Referrer path to redirect to after sign in
+  const from = state?.from;
+
   // Handles the submission of the login credentials to the api
   const handleApiSubmit = useCallback(
     async (values, { setSubmitting, setErrors }) => {
@@ -34,7 +38,8 @@ function useLogin() {
       try {
         const loggedUser = await loginUser(values);
         setCurrentUser(loggedUser); // Setting the current logged in user
-        navigate("/posts");
+        // Redirection
+        navigate(from || "/posts");
       } catch (error) {
         setSubmitting(false);
         if (error.response.status === 400)
@@ -44,7 +49,7 @@ function useLogin() {
           });
       }
     },
-    [navigate, setCurrentUser]
+    [navigate, setCurrentUser, from]
   );
 
   const { values, errors, touched, isSubmitting, handleChange, handleBlur, handleSubmit } = useFormik({
