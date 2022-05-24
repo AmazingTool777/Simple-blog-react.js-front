@@ -2,12 +2,14 @@ import { useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // API calls
 import { loginUser } from "../../apis/users-api";
 
 // Custom hooks
 import useCurrentUser from "../../hooks/useCurrentUser";
+import useToasts from "../../hooks/useToasts";
 
 // Initial values for the login crendentials fields
 const initialValues = {
@@ -31,13 +33,37 @@ function useLogin() {
   // Referrer path to redirect to after sign in
   const from = state?.from;
 
+  const { handleToastAdd } = useToasts();
+
   // Handles the submission of the login credentials to the api
   const handleApiSubmit = useCallback(
     async (values, { setSubmitting, setErrors }) => {
       setSubmitting(true);
       try {
         const loggedUser = await loginUser(values);
-        setCurrentUser(loggedUser); // Setting the current logged in user
+        // Setting the current logged in user
+        setCurrentUser(loggedUser);
+        // Triggering the corresponding toast
+        handleToastAdd({
+          type: "BROWSING_MESSAGE",
+          message: {
+            title: (
+              <>
+                <FontAwesomeIcon icon="check-circle" className="me-2 text-success" />
+                Successful sign in
+              </>
+            ),
+            content: (
+              <p className="mb-0">
+                Welcome back {loggedUser.gender === "M" ? "mr" : "mrs"}{" "}
+                <strong>
+                  {loggedUser.firstName} {loggedUser.lastName}
+                </strong>
+              </p>
+            ),
+            duration: 5000,
+          },
+        });
         // Redirection
         navigate(from || "/posts");
       } catch (error) {
@@ -49,7 +75,7 @@ function useLogin() {
           });
       }
     },
-    [navigate, setCurrentUser, from]
+    [navigate, setCurrentUser, from, handleToastAdd]
   );
 
   const { values, errors, touched, isSubmitting, handleChange, handleBlur, handleSubmit } = useFormik({
