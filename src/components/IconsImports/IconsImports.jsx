@@ -17,6 +17,7 @@ import {
   faAngleLeft,
   faFileImage,
   faSignOutAlt,
+  faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -36,7 +37,8 @@ library.add(
   faAngleRight,
   faAngleLeft,
   faFileImage,
-  faSignOutAlt
+  faSignOutAlt,
+  faTimesCircle
 );
 
 const IconsImports = ({ children }) => {
