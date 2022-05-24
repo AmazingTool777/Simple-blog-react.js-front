@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import useToasts from "../../hooks/useToasts";
 
 // Components
-import NotificationsToasts from "../../components/NotificationsToasts";
+import BrowsingToasts from "../../components/BrowsingToasts";
 
 // Styles
 import "./TestPage.css";
@@ -19,8 +19,8 @@ const TestPage = () => {
 
   const handleAdd = useCallback(() => {
     handleToastAdd({
-      type: "NOTIFICATION",
-      message: { title: "Notification message", content: "You received 2 new messages" },
+      type: "BROWSING_MESSAGE",
+      message: { title: "Notification message", content: "You received 2 new messages", duration: 2000, delay: 1000 },
     });
   }, [handleToastAdd]);
 
@@ -30,6 +30,7 @@ const TestPage = () => {
   const LIMIT = 5;
 
   useEffect(() => {
+    console.log(count);
     if (count >= 1) {
       handleAdd();
       setDoneCount(doneCount + 1);
@@ -38,8 +39,9 @@ const TestPage = () => {
   }, [count]);
 
   useEffect(() => {
-    if (count < LIMIT) {
-      setTimeout(incrementCountRef.current, 5000);
+    console.log(doneCount);
+    if (count <= LIMIT) {
+      setTimeout(incrementCountRef.current, 1000);
       return () => clearTimeout(incrementCountRef.current);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -60,7 +62,7 @@ const TestPage = () => {
 
   return (
     <div id="test-page">
-      <NotificationsToasts />
+      <BrowsingToasts />
     </div>
   );
 };
