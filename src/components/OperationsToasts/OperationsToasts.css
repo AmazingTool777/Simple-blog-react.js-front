@@ -1,0 +1,12 @@
+#operations-toasts {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 1000;
+}
+
+#operations-toasts > * {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
