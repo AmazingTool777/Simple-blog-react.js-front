@@ -1,0 +1,12 @@
+#browsing-toasts {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 1000;
+}
+
+#browsing-toasts > * {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
