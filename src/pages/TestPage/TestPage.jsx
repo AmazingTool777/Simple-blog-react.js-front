@@ -1,47 +1,51 @@
-import { useState, useEffect, useCallback } from "react";
-import AppToast from "../../components/AppToast";
+import { useState, useEffect, useCallback, useRef } from "react";
+
+// Custom hooks
+import useToasts from "../../hooks/useToasts";
+
+// Components
+import NotificationsToasts from "../../components/NotificationsToasts";
 
 // Styles
 import "./TestPage.css";
 
 const TestPage = () => {
-  const [toasts, setToasts] = useState([
-    // { id: Date.now(), title: "Notification", content: "You have a new message", duration: 2000, show: true },
-    // { id: Date.now() + 2, title: "Notification", content: "You have a new message", duration: 2000, show: true },
-  ]);
   const [count, setCount] = useState(0);
+  const [doneCount, setDoneCount] = useState(0);
 
-  const handleClose = useCallback(
-    (toast) => {
-      const i = toasts.indexOf(toast);
-      const _toasts = [...toasts];
-      _toasts[i] = { ...toast, show: false };
-      setToasts(() => _toasts);
-    },
-    [toasts]
-  );
+  const incrementCountRef = useRef(null);
 
-  const handleDelete = useCallback(
-    (toast) => {
-      setToasts(toasts.filter((_toast) => _toast !== toast));
-    },
-    [toasts]
-  );
+  const { handleToastAdd } = useToasts();
+
+  const handleAdd = useCallback(() => {
+    handleToastAdd({
+      type: "NOTIFICATION",
+      message: { title: "Notification message", content: "You received 2 new messages" },
+    });
+  }, [handleToastAdd]);
+
+  const incrementCount = useCallback(() => setCount(count + 1), [count]);
+  incrementCountRef.current = incrementCount;
 
   const LIMIT = 5;
 
-  const incrementCount = useCallback(() => {
-    setCount(count + 1);
+  useEffect(() => {
+    if (count >= 1) {
+      handleAdd();
+      setDoneCount(doneCount + 1);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [count]);
 
-  const addToast = useCallback(() => {
-    setToasts([
-      ...toasts,
-      { id: Date.now(), title: "Notification", content: "You have a new message", duration: 2000, show: true },
-    ]);
-  }, [toasts]);
-
   useEffect(() => {
+    if (count < LIMIT) {
+      setTimeout(incrementCountRef.current, 5000);
+      return () => clearTimeout(incrementCountRef.current);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [doneCount]);
+
+  /* useEffect(() => {
     if (count < LIMIT) {
       setTimeout(incrementCount, 5000);
       return () => clearTimeout(incrementCount);
@@ -52,24 +56,11 @@ const TestPage = () => {
   useEffect(() => {
     if (count >= 1) addToast();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [count]);
+  }, [count]); */
 
   return (
     <div id="test-page">
-      <div className="toasts-container">
-        <div className="toasts-wrapper d-flex flex-column">
-          {toasts.map((toast) => (
-            <AppToast
-              key={toast.id}
-              show={toast.show}
-              duration={toast.duration}
-              toast={toast}
-              onClose={handleClose}
-              onDelete={handleDelete}
-            />
-          ))}
-        </div>
-      </div>
+      <NotificationsToasts />
     </div>
   );
 };
