@@ -1,5 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+// Components
+import UsersParams from "./UsersParams";
+
 const UsersPage = () => {
 	return (
 		<section id="users-page">
@@ -10,6 +13,7 @@ const UsersPage = () => {
 				</h1>
 				<hr />
 			</header>
+			<UsersParams />
 		</section>
 	);
 };
