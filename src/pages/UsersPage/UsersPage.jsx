@@ -8,7 +8,7 @@ import useUsers from "./useUsers";
 
 // Components
 import UsersParams from "./UsersParams";
-import UserCard from "./UserCard";
+import UserCard, { UserCardLoaders } from "./UserCard";
 
 const UsersPage = () => {
 	const { users, order, page, pages, isLoading, count, handleOrderChange, handleSearchChange } = useUsers();
@@ -37,11 +37,22 @@ const UsersPage = () => {
 			</p>
 			<hr />
 			<Row className="mt-4">
-				{users.map((user) => (
-					<Col key={user._id} xs={12} md={6} lg={4}>
-						<UserCard user={user} />
-					</Col>
-				))}
+				{(page !== 1 || !isLoading) &&
+					users.map((user) => (
+						<Col key={user._id} xs={12} md={6} lg={4}>
+							<UserCard user={user} />
+						</Col>
+					))}
+				{isLoading && (
+					<>
+						<Col xs={12} md={6} lg={4}>
+							<UserCardLoaders />
+						</Col>
+						<Col xs={12} md={6} lg={4}>
+							<UserCardLoaders />
+						</Col>
+					</>
+				)}
 				{!isLoading && page === pages && (
 					<Col xs={12}>
 						<p className="text-center text-secondary">End of results.</p>
