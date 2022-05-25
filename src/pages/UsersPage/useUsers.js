@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 // API calls
 import { fetchUsers } from "../../apis/users-api";
@@ -11,6 +11,16 @@ export default function useUsers() {
 	const [page, setPage] = useState(1);
 	const [order, setOrder] = useState("desc");
 	const [search, setSearch] = useState("");
+
+	const handleOrderChange = useCallback((order) => {
+		setPage(1);
+		setOrder(order);
+	}, []);
+
+	const handleSearchChange = useCallback((search) => {
+		setPage(1);
+		setSearch(search);
+	}, []);
 
 	const [users, isLoading, count, pages] = usePaginatedApiCall(
 		() => {
@@ -30,7 +40,7 @@ export default function useUsers() {
 		count,
 		pages,
 		handlePageChange: setPage,
-		handleOrderChange: setOrder,
-		handleSearchChange: setSearch,
+		handleOrderChange,
+		handleSearchChange,
 	};
 }
