@@ -27,7 +27,10 @@ export default function useUsers() {
 			const LIMIT = 12;
 			return fetchUsers(page, LIMIT, order, search);
 		},
-		null,
+		{
+			merge: true,
+			key: "_id",
+		},
 		[page, order, search]
 	);
 
