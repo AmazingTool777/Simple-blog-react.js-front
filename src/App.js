@@ -16,70 +16,74 @@ import IconsImports from "./components/IconsImports";
 import AppNavbar from "./components/AppNavbar";
 import MainContentLayout from "./components/MainContentLayout";
 import AuthPagesLayout from "./components/AuthPagesLayout";
+
+// Pages
 import TestPage from "./pages/TestPage";
 import PostsPage from "./pages/PostsPage";
 import PostPage from "./pages/PostPage";
 import SignupPage from "./pages/SignupPage";
 import SigninPage from "./pages/SigninPage";
 import AddPostPage from "./pages/AddPostPage";
+import UsersPage from "./pages/UsersPage";
 
 // Styles
 import "./App.css";
 
 function App() {
-  return (
-    <CurrentUserProvider>
-      <currentUserContext.Consumer>
-        {({ initialSetupIsDone }) =>
-          !initialSetupIsDone ? (
-            <AppPreloader />
-          ) : (
-            <ToastsProvider>
-              <IconsImports>
-                <Router>
-                  <div className="App">
-                    <AppNavbar />
-                    <div id="pages-wrapper">
-                      <Routes>
-                        <Route path="/" element={<MainContentLayout />}>
-                          <Route index element={<Navigate to="/posts" replace />} />
-                          <Route path="/posts" element={<PostsPage />} />
-                          <Route path="/posts/:postId" element={<PostPage />} />
-                        </Route>
-                        <Route
-                          path="/auth/*"
-                          element={
-                            <ProtectedRoute reverse={true}>
-                              <AuthPagesLayout />
-                            </ProtectedRoute>
-                          }
-                        >
-                          <Route path="signup" element={<SignupPage />} />
-                          <Route path="login" element={<SigninPage />} />
-                        </Route>
-                        <Route
-                          path="/add-post"
-                          element={
-                            <ProtectedRoute>
-                              <AddPostPage />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route path="/test" element={<TestPage />} />
-                      </Routes>
-                      <NotificationsToasts />
-                      <BrowsingToasts />
-                      <OperationsToasts />
-                    </div>
-                  </div>
-                </Router>
-              </IconsImports>
-            </ToastsProvider>
-          )
-        }
-      </currentUserContext.Consumer>
-    </CurrentUserProvider>
-  );
+	return (
+		<CurrentUserProvider>
+			<currentUserContext.Consumer>
+				{({ initialSetupIsDone }) =>
+					!initialSetupIsDone ? (
+						<AppPreloader />
+					) : (
+						<ToastsProvider>
+							<IconsImports>
+								<Router>
+									<div className="App">
+										<AppNavbar />
+										<div id="pages-wrapper">
+											<Routes>
+												<Route path="/" element={<MainContentLayout />}>
+													<Route index element={<Navigate to="/posts" replace />} />
+													<Route path="/posts" element={<PostsPage />} />
+													<Route path="/posts/:postId" element={<PostPage />} />
+													<Route path="/users" element={<UsersPage />} />
+												</Route>
+												<Route
+													path="/auth/*"
+													element={
+														<ProtectedRoute reverse={true}>
+															<AuthPagesLayout />
+														</ProtectedRoute>
+													}
+												>
+													<Route path="signup" element={<SignupPage />} />
+													<Route path="login" element={<SigninPage />} />
+												</Route>
+												<Route
+													path="/add-post"
+													element={
+														<ProtectedRoute>
+															<AddPostPage />
+														</ProtectedRoute>
+													}
+												/>
+												<Route path="/test" element={<TestPage />} />
+											</Routes>
+											<NotificationsToasts />
+											<BrowsingToasts />
+											<OperationsToasts />
+										</div>
+									</div>
+								</Router>
+							</IconsImports>
+						</ToastsProvider>
+					)
+				}
+			</currentUserContext.Consumer>
+		</CurrentUserProvider>
+	);
 }
 
 export default App;
