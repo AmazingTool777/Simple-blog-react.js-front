@@ -1,4 +1,6 @@
 import { useEffect } from "react";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // Custom hooks
@@ -9,7 +11,7 @@ import UsersParams from "./UsersParams";
 import UserCard from "./UserCard";
 
 const UsersPage = () => {
-	const { users, order, isLoading, count, handleOrderChange, handleSearchChange } = useUsers();
+	const { users, order, page, pages, isLoading, count, handleOrderChange, handleSearchChange } = useUsers();
 
 	useEffect(() => {
 		console.log(users);
@@ -34,9 +36,18 @@ const UsersPage = () => {
 				<strong className="text-dark">{count}</strong> result{count > 1 && "s"}
 			</p>
 			<hr />
-			<div className="users-list">
-				<UserCard />
-			</div>
+			<Row className="mt-4">
+				{users.map((user) => (
+					<Col key={user._id} xs={12} md={6} lg={4}>
+						<UserCard user={user} />
+					</Col>
+				))}
+				{!isLoading && page === pages && (
+					<Col xs={12}>
+						<p className="text-center text-secondary">End of results.</p>
+					</Col>
+				)}
+			</Row>
 		</section>
 	);
 };
