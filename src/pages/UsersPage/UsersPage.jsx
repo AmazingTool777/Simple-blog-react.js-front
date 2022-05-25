@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // Custom hooks
@@ -7,7 +8,11 @@ import useUsers from "./useUsers";
 import UsersParams from "./UsersParams";
 
 const UsersPage = () => {
-	useUsers();
+	const { users, order, isLoading, handleOrderChange, handleSearchChange } = useUsers();
+
+	useEffect(() => {
+		console.log(users);
+	}, [users]);
 
 	return (
 		<section id="users-page">
@@ -18,7 +23,12 @@ const UsersPage = () => {
 				</h1>
 				<hr />
 			</header>
-			<UsersParams />
+			<UsersParams
+				isDisabled={isLoading}
+				order={order}
+				onOrderChange={handleOrderChange}
+				onSearchSubmit={handleSearchChange}
+			/>
 		</section>
 	);
 };
