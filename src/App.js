@@ -25,6 +25,7 @@ import SignupPage from "./pages/SignupPage";
 import SigninPage from "./pages/SigninPage";
 import AddPostPage from "./pages/AddPostPage";
 import UsersPage from "./pages/UsersPage";
+import UserPage from "./pages/UserPage";
 
 // Styles
 import "./App.css";
@@ -49,6 +50,7 @@ function App() {
 													<Route path="/posts" element={<PostsPage />} />
 													<Route path="/posts/:postId" element={<PostPage />} />
 													<Route path="/users" element={<UsersPage />} />
+													<Route path="/users/:userId" element={<UserPage />} />
 												</Route>
 												<Route
 													path="/auth/*"
