@@ -26,6 +26,7 @@ const PostPage = () => {
 			<AppBreadcrumbNav
 				isLoading={isLoading}
 				basePath="/posts"
+				baseEntity="Posts"
 				title={post ? post.title : null}
 				notFoundMessage="Post not found"
 			/>

@@ -9,7 +9,7 @@ import "./AppBreadcrumbNav.css";
 // Components
 import { EntityTitleLoader } from "../Loaders";
 
-const AppBreadcrumbNav = ({ isLoading, basePath, title, notFoundMessage }) => {
+const AppBreadcrumbNav = ({ isLoading, basePath, baseEntity, title, notFoundMessage }) => {
 	const navigate = useNavigate();
 
 	return (
@@ -25,7 +25,7 @@ const AppBreadcrumbNav = ({ isLoading, basePath, title, notFoundMessage }) => {
 			</Button>
 			<Breadcrumb className="text-nowrap overflow-hidden" listProps={{ className: "mb-0 nowrap flex-nowrap" }}>
 				<Breadcrumb.Item linkAs={Link} linkProps={{ to: basePath }}>
-					Posts
+					{baseEntity}
 				</Breadcrumb.Item>
 				<Breadcrumb.Item
 					linkAs={title ? "strong" : "em"}
