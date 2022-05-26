@@ -3,6 +3,9 @@ import Button from "react-bootstrap/Button";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+// Styles
+import "./AppBreadcrumbNav.css";
+
 // Components
 import { EntityTitleLoader } from "../Loaders";
 
@@ -10,7 +13,7 @@ const AppBreadcrumbNav = ({ isLoading, basePath, title, notFoundMessage }) => {
 	const navigate = useNavigate();
 
 	return (
-		<nav className="post-navbar d-flex align-items-center py-2">
+		<nav className="app-breadcrumb-nav d-flex align-items-center py-2">
 			<Button
 				type="button"
 				title="Go back"

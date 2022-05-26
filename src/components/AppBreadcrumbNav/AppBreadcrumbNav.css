@@ -1,0 +1,7 @@
+.app-breadcrumb-nav {
+  border-bottom: 1px solid #ddd;
+  position: sticky;
+  top: 56px; /* 56px: The height of the app navbar */
+  background-color: #fff;
+  z-index: 10;
+}

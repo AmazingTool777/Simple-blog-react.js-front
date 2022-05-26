@@ -1,6 +1,4 @@
-import { Link, useParams, useNavigate } from "react-router-dom";
-import Button from "react-bootstrap/Button";
-import Breadcrumb from "react-bootstrap/Breadcrumb";
+import { Link, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // Styles
@@ -15,80 +13,62 @@ import usePost from "./usePost";
 // Components
 import UserAvatar from "../../components/UserAvatar";
 import CategoryBullet from "../../components/CategoryBullet";
-import PostPageLoaders, { PostTitleLoader } from "./PostPageLoaders";
+import PostPageLoaders from "./PostPageLoaders";
+import AppBreadcrumbNav from "../../components/AppBreadcrumbNav";
 
 const PostPage = () => {
-  const { postId } = useParams();
+	const { postId } = useParams();
 
-  const { post, isLoading } = usePost(postId);
+	const { post, isLoading } = usePost(postId);
 
-  const navigate = useNavigate();
-
-  return (
-    <section id="post-page">
-      <nav className="post-navbar d-flex align-items-center py-2">
-        <Button
-          type="button"
-          title="Go back"
-          variant="light"
-          className="text-secondary fw-bolder me-3"
-          onClick={() => navigate(-1)}
-        >
-          <FontAwesomeIcon icon="arrow-left" />
-        </Button>
-        <Breadcrumb className="text-nowrap overflow-hidden" listProps={{ className: "mb-0 nowrap flex-nowrap" }}>
-          <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/posts" }}>
-            Posts
-          </Breadcrumb.Item>
-          <Breadcrumb.Item
-            linkAs={post ? "strong" : "em"}
-            active={false}
-            linkProps={{ className: `text-decoration-none text-${post ? "dark" : "secondary"}` }}
-          >
-            {isLoading ? <PostTitleLoader /> : post ? post.title : "Post not found"}
-          </Breadcrumb.Item>
-        </Breadcrumb>
-      </nav>
-      {isLoading && <PostPageLoaders />}
-      {!isLoading && post && (
-        <article id="post-article" className="pt-4">
-          <h1 className="mb-4 text-center">{post.title}</h1>
-          <section className="author-section mb-3 mx-auto">
-            <UserAvatar />
-            <strong className="author-name">
-              <Link to={`/users/${post.author._id}`} className="text-decoration-none">
-                {post.author.firstName} {post.author.lastName}
-              </Link>
-              <FontAwesomeIcon icon="pen-alt" className="ms-2 text-muted" />
-            </strong>
-            <p className="post-publish-date mb-0 text-secondary">
-              <FontAwesomeIcon icon="clock" className="me-2" />
-              <em className="text-dark fst-normal">{getDateISO(post.createdAt)}</em> at{" "}
-              <em className="text-dark fst-normal">{getTimeISO(post.createdAt)}</em>
-            </p>
-          </section>
-          <figure id="post-illutration">
-            <img src={post.photoURL} alt={"Post illustration"} />
-          </figure>
-          <p className="post-content lead my-4">{post.content}</p>
-          <section className="post-categories">
-            <h5 className="text-muted mb-4">Categories:</h5>
-            {post.categories.length > 0 ? (
-              <ul className="list-unstyled d-flex flex-wrap">
-                {post.categories.map((category) => (
-                  <li key={category._id} className="me-3 mb-2">
-                    <CategoryBullet isActive={true} category={category} />
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-secondary">No categories</p>
-            )}
-          </section>
-        </article>
-      )}
-    </section>
-  );
+	return (
+		<section id="post-page">
+			<AppBreadcrumbNav
+				isLoading={isLoading}
+				basePath="/posts"
+				title={post ? post.title : null}
+				notFoundMessage="Post not found"
+			/>
+			{isLoading && <PostPageLoaders />}
+			{!isLoading && post && (
+				<article id="post-article" className="pt-4">
+					<h1 className="mb-4 text-center">{post.title}</h1>
+					<section className="author-section mb-3 mx-auto">
+						<UserAvatar />
+						<strong className="author-name">
+							<Link to={`/users/${post.author._id}`} className="text-decoration-none">
+								{post.author.firstName} {post.author.lastName}
+							</Link>
+							<FontAwesomeIcon icon="pen-alt" className="ms-2 text-muted" />
+						</strong>
+						<p className="post-publish-date mb-0 text-secondary">
+							<FontAwesomeIcon icon="clock" className="me-2" />
+							<em className="text-dark fst-normal">{getDateISO(post.createdAt)}</em> at{" "}
+							<em className="text-dark fst-normal">{getTimeISO(post.createdAt)}</em>
+						</p>
+					</section>
+					<figure id="post-illutration">
+						<img src={post.photoURL} alt={"Post illustration"} />
+					</figure>
+					<p className="post-content lead my-4">{post.content}</p>
+					<section className="post-categories">
+						<h5 className="text-muted mb-4">Categories:</h5>
+						{post.categories.length > 0 ? (
+							<ul className="list-unstyled d-flex flex-wrap">
+								{post.categories.map((category) => (
+									<li key={category._id} className="me-3 mb-2">
+										<CategoryBullet isActive={true} category={category} />
+									</li>
+								))}
+							</ul>
+						) : (
+							<p className="text-secondary">No categories</p>
+						)}
+					</section>
+				</article>
+			)}
+		</section>
+	);
 };
 
 export default PostPage;
