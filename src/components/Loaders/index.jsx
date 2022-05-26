@@ -1,3 +1,1 @@
-import { ResultsNumberLoader } from "./Loaders";
-
-export { ResultsNumberLoader };
+export { ResultsNumberLoader, EntityTitleLoader } from "./Loaders";

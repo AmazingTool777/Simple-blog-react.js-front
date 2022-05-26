@@ -8,4 +8,11 @@ const ResultsNumberLoader = () => {
 	);
 };
 
-export { ResultsNumberLoader };
+// Loader for an entity title in the breadcrumb
+const EntityTitleLoader = () => (
+	<ContentLoader style={{ width: "150px", height: "21px" }} viewBox="0 0 150 21">
+		<rect x={0} y={0} width={151} height={21} rx="10" ry="10" />
+	</ContentLoader>
+);
+
+export { ResultsNumberLoader, EntityTitleLoader };
