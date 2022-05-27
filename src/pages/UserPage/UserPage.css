@@ -1,0 +1,11 @@
+#user-page .profile-avatar {
+  width: auto;
+  height: auto;
+  min-width: 6.25rem; /* 100px */
+  width: 30%;
+  max-width: 9.375rem; /* 150px */
+}
+
+#user-page .profile-info .user-join_date > *:not(svg) {
+  font-size: 0.875rem; /* 14px */
+}
