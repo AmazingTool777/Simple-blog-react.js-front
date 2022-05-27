@@ -28,8 +28,14 @@ async function loginUser(credentials) {
 
 // Gets users
 async function fetchUsers(page = 1, limit = 12, order = "DESC", search = "") {
-	const url = `${ENDPOINT}?page=${page}&limit=${limit}&order=${order}&search=${search}`;
-	return (await axios.get(url)).data;
+	const URL = `${ENDPOINT}?page=${page}&limit=${limit}&order=${order}&search=${search}`;
+	return (await axios.get(URL)).data;
 }
 
-export { signupUser, authenticateUserFromToken, loginUser, fetchUsers };
+// Gets a user
+async function fetchUser(id) {
+	const URL = `${ENDPOINT}/${id}`;
+	return (await axios.get(URL)).data;
+}
+
+export { signupUser, authenticateUserFromToken, loginUser, fetchUsers, fetchUser };
