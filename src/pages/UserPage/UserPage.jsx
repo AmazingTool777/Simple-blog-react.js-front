@@ -13,6 +13,7 @@ import useUser from "./useUser";
 // Components
 import AppBreadcrumbNav from "../../components/AppBreadcrumbNav";
 import UserAvatar from "../../components/UserAvatar";
+import NotFoundFiller from "../../components/NotFoundFiller";
 import UserPageLoaders from "./UserPageLoaders";
 
 const UserPage = () => {
@@ -58,6 +59,7 @@ const UserPage = () => {
 							</div>
 						</article>
 					)}
+					{!user && <NotFoundFiller />}
 				</>
 			)}
 		</section>
