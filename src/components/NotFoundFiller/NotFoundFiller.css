@@ -1,0 +1,12 @@
+.not-found-filler {
+  height: calc(80vh);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.not-found-filler > * {
+  width: 80%;
+  max-width: 500px;
+}
+
