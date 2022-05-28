@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getDateISO, getTimeISO } from "../../../utils/dates-utils";
+import { getDateISO, getTimeISO } from "../../utils/dates-utils";
 
 // Styles
 import "./PostsPreviewCard.css";
