@@ -22,10 +22,10 @@ function reducer(state, action) {
       return { ...state, isLoading: true };
 
     case ACTIONS.DATA_FETCHED: {
-      const { paginatedResults, merge, key } = action.payload;
+      const { paginatedResults, merge, key, isInitial } = action.payload;
       return {
         isLoading: false,
-        rows: !merge ? paginatedResults.rows : _.unionBy(paginatedResults.rows, state.rows, key),
+        rows: !merge || isInitial ? paginatedResults.rows : _.unionBy(paginatedResults.rows, state.rows, key),
         count: paginatedResults.count,
         pages: paginatedResults.pages,
         error: null,
@@ -55,10 +55,10 @@ function usePaginatedApiCall(apiCall, options, dependencies) {
     dispatch({ type: ACTIONS.DATA_LOADING });
     apiCall()
       .then((paginatedResults) => {
-        const _options = options ? options : { merge: false, key: null };
+        const _options = options ? options : { merge: false, key: null, isInitial: true };
         dispatch({
           type: ACTIONS.DATA_FETCHED,
-          payload: { paginatedResults, merge: _options.merge, key: _options.key },
+          payload: { paginatedResults, merge: _options.merge, key: _options.key, isInitial: true },
         });
       })
       .catch((error) => {
