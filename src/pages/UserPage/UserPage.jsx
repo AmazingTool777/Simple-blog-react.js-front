@@ -35,7 +35,7 @@ const UserPage = () => {
       ) : (
         <>
           {user && (
-            <article className="mt-5">
+            <article className="my-5">
               <div className="profile-layout d-flex align-items-start">
                 <UserAvatar
                   className="profile-avatar"
@@ -62,6 +62,18 @@ const UserPage = () => {
           {!user && hasFetched && <NotFoundFiller />}
         </>
       )}
+      <section>
+        <header className="user-posts-header d-flex justify-content-between align-items-end">
+          <h2 className="mb-0">
+            <FontAwesomeIcon icon="newspaper" className="me-3" />
+            Posts
+          </h2>
+          <div>
+            <Badge bg="secondary">12</Badge> posts
+          </div>
+        </header>
+        <hr className="mb-4" />
+      </section>
     </section>
   );
 };
