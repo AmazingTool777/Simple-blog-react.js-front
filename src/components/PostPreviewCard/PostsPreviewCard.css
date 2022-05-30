@@ -1,30 +1,30 @@
-#posts-page .post-preview-card {
+.post-preview-card {
   cursor: pointer;
   transition: 0.3s;
 }
-#posts-page .post-preview-card:hover {
+.post-preview-card:hover {
   box-shadow: 0 4px 8px #ddd;
 }
 
-#posts-page .post-preview-card .card-body > * {
+.post-preview-card .card-body > * {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-#posts-page .post-preview-card .card-title {
+.post-preview-card .card-title {
   font-size: 1.2em;
   transition: 0.3s;
 }
-#posts-page .post-preview-card:hover .card-title {
+.post-preview-card:hover .card-title {
   text-decoration: underline;
 }
 
-#posts-page .post-preview-card .card-text {
+.post-preview-card .card-text {
   font-size: 0.87rem;
 }
 
-#posts-page .post-preview-card img {
+.post-preview-card img {
   height: 200px;
   object-fit: cover;
   object-position: center;
