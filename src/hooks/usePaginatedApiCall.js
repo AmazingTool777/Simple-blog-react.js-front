@@ -58,7 +58,7 @@ function usePaginatedApiCall(apiCall, options, dependencies) {
         const _options = options ? options : { merge: false, key: null, isInitial: true };
         dispatch({
           type: ACTIONS.DATA_FETCHED,
-          payload: { paginatedResults, merge: _options.merge, key: _options.key, isInitial: true },
+          payload: { paginatedResults, merge: _options.merge, key: _options.key, isInitial: _options.isInitial },
         });
       })
       .catch((error) => {
