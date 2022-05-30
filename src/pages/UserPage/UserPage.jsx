@@ -14,6 +14,7 @@ import useUser from "./useUser";
 import AppBreadcrumbNav from "../../components/AppBreadcrumbNav";
 import UserAvatar from "../../components/UserAvatar";
 import NotFoundFiller from "../../components/NotFoundFiller";
+import UserPosts from "./UserPosts";
 import UserPageLoaders from "./UserPageLoaders";
 
 const UserPage = () => {
@@ -62,18 +63,7 @@ const UserPage = () => {
           {!user && hasFetched && <NotFoundFiller />}
         </>
       )}
-      <section>
-        <header className="user-posts-header d-flex justify-content-between align-items-end">
-          <h2 className="mb-0">
-            <FontAwesomeIcon icon="newspaper" className="me-3" />
-            Posts
-          </h2>
-          <div>
-            <Badge bg="secondary">12</Badge> posts
-          </div>
-        </header>
-        <hr className="mb-4" />
-      </section>
+      {hasFetched && user && <UserPosts />}
     </section>
   );
 };
