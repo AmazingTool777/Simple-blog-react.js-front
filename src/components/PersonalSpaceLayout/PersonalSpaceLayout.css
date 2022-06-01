@@ -1,0 +1,44 @@
+#personal-space .personal-space-sidebar {
+  min-height: calc(100vh - 3.5rem); /* 3.5rem: 56px: Navbar height */
+  height: 100%;
+  width: 300px;
+  position: sticky;
+  bottom: 0;
+  /* background-color: #f1f1f1; */
+  z-index: 10;
+}
+
+#personal-space h1.personal-space-title {
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+
+#personal-space-user-avatar {
+  width: 5.625rem; /* 90px */
+  height: auto;
+  aspect-ratio: 1/1;
+}
+
+#personal-space .personal-space-navlink {
+  display: block;
+  text-decoration: none;
+  border-top: 1px solid #ddd;
+  width: 100%;
+  padding: 1rem;
+  font-weight: 600;
+  font-size: 1.125rem; /* 18px */
+  transition: 0.3s;
+}
+#personal-space .personal-space-navlink:last-child {
+  border-bottom: 1px solid #ddd;
+}
+#personal-space .personal-space-navlink.active {
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+#personal-space .personal-space-navlink .icon-container {
+  width: 2rem;
+  display: inline-block;
+  text-align: center;
+}
