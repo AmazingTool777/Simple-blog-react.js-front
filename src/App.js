@@ -81,7 +81,7 @@ function App() {
                           }
                         >
                           <Route index element={<Navigate to="account" replace />} />
-                          <Route path="account" element={<></>} />
+                          <Route path="account" element={<h1>My account</h1>} />
                         </Route>
                         <Route path="/test" element={<TestPage />} />
                       </Routes>

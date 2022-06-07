@@ -19,8 +19,8 @@ const PersonalSpaceLayout = () => {
   const username = `${currentUser.firstName} ${currentUser.lastName}`;
 
   return (
-    <section id="personal-space">
-      <div className="personal-space-sidebar bg-light shadow pt-2 d-flex flex-column">
+    <section id="personal-space" className="d-flex">
+      <div className="personal-space-sidebar bg-light shadow pt-2 flex-column">
         <div className="d-flex align-items-center">
           <Button type="button" variant="light" className="text-secondary" title="Go back" onClick={() => navigate(-1)}>
             <FontAwesomeIcon icon="arrow-left" />
@@ -58,7 +58,9 @@ const PersonalSpaceLayout = () => {
           </div>
         </div>
       </div>
-      <Outlet />
+      <div className="pt-4 pb-5 px-3 px-md-4 flex-fill">
+        <Outlet />
+      </div>
     </section>
   );
 };
