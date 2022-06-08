@@ -15,7 +15,7 @@ export default function useUserPosts(authorId) {
   const [posts, isLoading, count, pages] = usePaginatedApiCall(
     () => {
       const LIMIT = 12;
-      return fetchPaginatedPosts(page, LIMIT, order, search, authorId);
+      return fetchPaginatedPosts(page, LIMIT, order, search, null, authorId);
     },
     {
       merge: true,

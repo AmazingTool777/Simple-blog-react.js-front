@@ -16,7 +16,7 @@ function usePosts() {
   const [posts, isLoading, count, pages] = usePaginatedApiCall(
     () => {
       const LIMIT = 12;
-      return fetchPaginatedPosts(page, LIMIT, order, search);
+      return fetchPaginatedPosts(page, LIMIT, order, search, categoryId);
     },
     null,
     [page, search, order, categoryId]

@@ -4,9 +4,17 @@ import apiConfig from "../configs/api-config";
 const ENDPOINT = `${apiConfig.URL}/posts`;
 
 // Fetches paginated posts
-async function fetchPaginatedPosts(page = 1, limit = 12, order = "desc", search = "", authorId = null) {
+async function fetchPaginatedPosts(
+  page = 1,
+  limit = 12,
+  order = "desc",
+  search = "",
+  categoryId = null,
+  authorId = null
+) {
   const params = { page, limit, order, search: encodeURI(search) };
   if (authorId) params.authorId = authorId;
+  if (categoryId) params.categoryId = categoryId;
   return axios
     .get(ENDPOINT, {
       params,
