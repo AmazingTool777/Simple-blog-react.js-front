@@ -5,6 +5,7 @@ import useMyAccount from "./useMyAccount";
 
 // Components
 import ProfilePhotoSection from "./ProfilePhotoSection";
+import PersoInfoSection from "./PersoInfoSection";
 import MyAccountPageLoaders from "./MyAccountPageLoaders";
 
 const MyAccountPage = () => {
@@ -20,6 +21,7 @@ const MyAccountPage = () => {
       {!isLoading && hasFetched && (
         <>
           <ProfilePhotoSection user={user} onPhotoUpdated={handleProfilePhotoUpdated} />
+          <PersoInfoSection />
         </>
       )}
     </section>

@@ -37,7 +37,7 @@ const ProfilePhotoSection = ({ user, onPhotoUpdated }) => {
   const ALT = `${user.fisrtName} ${user.lastName}'s profile photo`;
 
   return (
-    <section>
+    <section className="mb-5">
       <h2 className="fs-3 mb-4">Profile photo</h2>
       <form onSubmit={handleSubmit}>
         <PhotoPreview ref={profilePhotoRef} isOpen={isOpen} onClose={handleClose} onFileChange={handlePhotoChange}>
