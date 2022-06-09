@@ -8,7 +8,7 @@ import ProfilePhotoSection from "./ProfilePhotoSection";
 import MyAccountPageLoaders from "./MyAccountPageLoaders";
 
 const MyAccountPage = () => {
-  const { user, isLoading, hasFetched } = useMyAccount();
+  const { user, isLoading, hasFetched, handleProfilePhotoUpdated } = useMyAccount();
 
   return (
     <section id="my-account-page">
@@ -19,7 +19,7 @@ const MyAccountPage = () => {
       {isLoading && <MyAccountPageLoaders />}
       {!isLoading && hasFetched && (
         <>
-          <ProfilePhotoSection user={user} />
+          <ProfilePhotoSection user={user} onPhotoUpdated={handleProfilePhotoUpdated} />
         </>
       )}
     </section>

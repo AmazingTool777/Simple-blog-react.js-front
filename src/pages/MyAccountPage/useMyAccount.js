@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 // API calls
 import { fetchUser } from "../../apis/users-api";
@@ -28,5 +28,12 @@ export default function useMyAccount() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { user: currentUser, hasFetched, isLoading };
+  const handleProfilePhotoUpdated = useCallback(
+    (updatedPhoto) => {
+      setCurrentUser({ ...currentUser, photoURL: updatedPhoto.photoURL });
+    },
+    [currentUser, setCurrentUser]
+  );
+
+  return { user: currentUser, hasFetched, isLoading, handleProfilePhotoUpdated };
 }
