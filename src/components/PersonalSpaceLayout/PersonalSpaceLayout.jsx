@@ -5,6 +5,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // Styles
 import "./PersonalSpaceLayout.css";
 
+// Contexts
+import { useSignupDialog } from "../../contexts/signoutDialog";
+
 // Custom hooks
 import useCurrentUser from "../../hooks/useCurrentUser";
 
@@ -15,6 +18,8 @@ const PersonalSpaceLayout = () => {
   const navigate = useNavigate();
 
   const { currentUser } = useCurrentUser();
+
+  const { handleSignoutModalShow } = useSignupDialog();
 
   const username = `${currentUser.firstName} ${currentUser.lastName}`;
 
@@ -51,7 +56,7 @@ const PersonalSpaceLayout = () => {
             </NavLink>
           </nav>
           <div className="d-grid mt-5 w-100">
-            <Button size="lg" variant="secondary">
+            <Button size="lg" variant="secondary" onClick={() => handleSignoutModalShow(true)}>
               <FontAwesomeIcon icon="sign-out-alt" className="me-3" />
               Sign out
             </Button>
