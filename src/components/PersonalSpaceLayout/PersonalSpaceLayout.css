@@ -3,7 +3,7 @@
   height: 100%;
   width: 300px;
   position: sticky;
-  bottom: 0;
+  top: 56px; /* Navbar height */
   /* background-color: #f1f1f1; */
   z-index: 10;
   display: none;
