@@ -1,24 +1,20 @@
-import { useState, useCallback } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // Custom hooks
 import useCurrentUser from "../../hooks/useCurrentUser";
 
+// Contexts
+import { useSignupDialog } from "../../contexts/signoutDialog";
+
 const AppNavbar = () => {
-  const [logoutModalShow, setLogoutModalShow] = useState(false);
+  const { isLoggedIn } = useCurrentUser();
 
-  const { isLoggedIn, logout } = useCurrentUser();
-
-  // Handles the sign out
-  const handleSignout = useCallback(() => {
-    logout(() => setLogoutModalShow(false));
-  }, [logout]);
+  const { handleSignoutModalShow } = useSignupDialog();
 
   return (
     <Navbar bg="primary" variant="dark" expand="md" sticky="top" className="shadow-sm">
@@ -51,41 +47,10 @@ const AppNavbar = () => {
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
                 <div className="d-grid">
-                  <Button type="button" variant="secondary" onClick={() => setLogoutModalShow(true)}>
+                  <Button type="button" variant="secondary" onClick={() => handleSignoutModalShow(true)}>
                     <FontAwesomeIcon icon="sign-out-alt" className="me-2" />
                     Sign out
                   </Button>
-                  <Modal
-                    centered
-                    size="sm"
-                    animation={true}
-                    backdrop="static"
-                    aria-labelledby="signout-modal"
-                    show={logoutModalShow}
-                    onHide={() => setLogoutModalShow(false)}
-                  >
-                    <Modal.Header closeButton>
-                      <Modal.Title id="signout-modal">Sign out confirmation</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                      <p className="fs-5 lead">Do you really want to sign out?</p>
-                    </Modal.Body>
-                    <Modal.Footer>
-                      <d-flex className="justify-content-end">
-                        <Button
-                          type="button"
-                          variant="outline-secondary"
-                          className="me-3"
-                          onClick={() => setLogoutModalShow(false)}
-                        >
-                          Cancel
-                        </Button>
-                        <Button type="button" variant="primary" onClick={handleSignout}>
-                          Confirm
-                        </Button>
-                      </d-flex>
-                    </Modal.Footer>
-                  </Modal>
                 </div>
               </NavDropdown>
             ) : (
