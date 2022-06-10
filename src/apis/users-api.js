@@ -44,4 +44,18 @@ async function updateUserPhoto(userId, photoData) {
   return (await axios.put(URL, photoData)).data;
 }
 
-export { signupUser, authenticateUserFromToken, loginUser, fetchUsers, fetchUser, updateUserPhoto };
+// Updates the user's persnal information
+async function updateUserPersoInfo(userId, userData) {
+  const URL = `${ENDPOINT}/${userId}`;
+  return (await axios.put(URL, userData)).data;
+}
+
+export {
+  signupUser,
+  authenticateUserFromToken,
+  loginUser,
+  fetchUsers,
+  fetchUser,
+  updateUserPhoto,
+  updateUserPersoInfo,
+};
