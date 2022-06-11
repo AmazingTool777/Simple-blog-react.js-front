@@ -6,12 +6,12 @@ import { getDateISO, getTimeISO } from "../../utils/dates-utils";
 // Styles
 import "./PostsPreviewCard.css";
 
-const PostsPreviewCard = ({ post }) => {
+const PostsPreviewCard = ({ post, linkTo }) => {
   const navigate = useNavigate();
 
   return (
     <article>
-      <Card onClick={() => navigate(`/posts/${post._id}`)} className="post-preview-card mb-4">
+      <Card onClick={() => navigate(linkTo ? linkTo : `/posts/${post._id}`)} className="post-preview-card mb-4">
         <Card.Img variant="top" src={post.photoURL} />
         <Card.Body>
           <Card.Title className="mb-3">{post.title}</Card.Title>
