@@ -6,7 +6,7 @@ import Badge from "react-bootstrap/Badge";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // Custom hooks
-import useUserPosts from "./useUserPosts";
+import useUserPosts from "../../../hooks/useUserPosts";
 import useScrollEndObserver from "../../../hooks/useScrollEndObserver";
 
 // Components

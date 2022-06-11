@@ -1,10 +1,10 @@
 import { useState, useCallback } from "react";
 
 // API calls
-import { fetchPaginatedPosts } from "../../../apis/posts-api";
+import { fetchPaginatedPosts } from "../apis/posts-api";
 
 // Other custom hooks
-import usePaginatedApiCall from "../../../hooks/usePaginatedApiCall";
+import usePaginatedApiCall from "./usePaginatedApiCall";
 
 // Custom hook for the user post component
 export default function useUserPosts(authorId) {
