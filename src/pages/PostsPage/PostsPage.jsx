@@ -4,8 +4,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 // Components
-import PostsParams from "./PostsParams";
 import PostsCategories from "./PostsCategories";
+import PostsParams from "../../components/PostsParams";
 import PostsPreviewCard, { PostPreviewCardLoaders } from "../../components/PostPreviewCard";
 import { ResultsNumberLoader } from "../../components/Loaders";
 

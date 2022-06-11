@@ -1,0 +1,11 @@
+.app-posts-params .posts-date-sort,
+.app-posts-params .posts-search {
+  width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .app-posts-params .posts-date-sort,
+  .app-posts-params .posts-search {
+    width: fit-content;
+  }
+}
