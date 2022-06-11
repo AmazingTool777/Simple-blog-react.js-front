@@ -30,6 +30,7 @@ import AddPostPage from "./pages/AddPostPage";
 import UsersPage from "./pages/UsersPage";
 import UserPage from "./pages/UserPage";
 import MyAccountPage from "./pages/MyAccountPage";
+import MyPostsPage from "./pages/MyPostsPage";
 
 // Styles
 import "./App.css";
@@ -86,6 +87,7 @@ function App() {
                           >
                             <Route index element={<Navigate to="account" replace />} />
                             <Route path="account" element={<MyAccountPage />} />
+                            <Route path="posts" element={<MyPostsPage />} />
                           </Route>
                           <Route path="/test" element={<TestPage />} />
                         </Routes>
