@@ -2,6 +2,7 @@
   min-height: calc(100vh - 3.5rem); /* 3.5rem: 56px: Navbar height */
   height: 100%;
   width: 300px;
+  min-width: 300px;
   position: sticky;
   top: 56px; /* Navbar height */
   /* background-color: #f1f1f1; */
