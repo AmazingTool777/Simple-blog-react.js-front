@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 // API calls
-import { fetchPost } from "../../apis/posts-api";
+import { fetchPost } from "../apis/posts-api";
 
 function usePost(postId) {
   const [post, setPost] = useState(null);
