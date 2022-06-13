@@ -45,4 +45,15 @@ async function addPost(postData, onUploadProgress) {
   return response.data;
 }
 
-export { fetchPaginatedPosts, fetchPost, addPost };
+// Updates a post's text fields
+async function updatePostTextFields(id, values) {
+  const token = localStorage.getItem("access-token");
+  const URL = `${ENDPOINT}/${id}/text`;
+  return (
+    await axios.put(URL, values, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  ).data;
+}
+
+export { fetchPaginatedPosts, fetchPost, addPost, updatePostTextFields };
