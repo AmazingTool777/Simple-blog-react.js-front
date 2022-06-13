@@ -20,7 +20,7 @@ function usePost(postId) {
       });
   }, [postId]);
 
-  return { post, isLoading };
+  return { post, isLoading, handlePostChange: setPost };
 }
 
 export default usePost;
