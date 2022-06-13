@@ -13,7 +13,7 @@ import useAddPost from "./useAddPost";
 
 // Components
 import PhotoPreview from "../../components/PhotoPreview";
-import CategoriesFields from "./CategoriesFields";
+import CategoriesFields from "../../components/CategoriesFields";
 import UploadToast from "./UploadToast";
 
 const AddPostPage = () => {

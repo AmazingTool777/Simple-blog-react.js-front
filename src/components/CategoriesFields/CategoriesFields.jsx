@@ -8,7 +8,7 @@ import AsyncSelect from "react-select/async";
 import useCategoriesFields from "./useCategoriesFields";
 
 // Components
-import CategorySelectBullet from "../../../components/CategorySelectBullet";
+import CategorySelectBullet from "../CategorySelectBullet";
 
 const CategoriesFields = ({
   isDisabled,

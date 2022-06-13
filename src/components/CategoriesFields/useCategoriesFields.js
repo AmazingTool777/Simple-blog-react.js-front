@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
 // API calls
-import { fetchPaginatedCategories } from "../../../apis/categories-api";
+import { fetchPaginatedCategories } from "../../apis/categories-api";
 
 // Custom hook for the categories fields component
 function useCategoriesFields(onSelectChange) {
