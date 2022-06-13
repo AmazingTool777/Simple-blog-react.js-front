@@ -1,0 +1,7 @@
+#my-post-page .my-post-photo {
+  max-height: 50vh;
+}
+
+#my-post-page .my-post-form-section {
+  max-width: 37.5rem; /* 37.5rem: 600px */
+}
