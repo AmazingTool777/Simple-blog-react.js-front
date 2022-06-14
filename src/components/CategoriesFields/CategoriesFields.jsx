@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, memo } from "react";
+import { useState, useCallback, useRef, useMemo, memo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -14,6 +14,7 @@ const CategoriesFields = ({
   isDisabled,
   error,
   isTouched,
+  initialCategories = [],
   newCategories,
   onSelectChange,
   onNewCategoryAdd,
@@ -42,6 +43,12 @@ const CategoriesFields = ({
     [error, isTouched]
   );
 
+  // Initial default values for the categories
+  const initialDefaultValues = useMemo(
+    () => initialCategories.map((category) => ({ value: category._id, label: category.label })),
+    [initialCategories]
+  );
+
   return (
     <>
       <Form.Group className="mb-3">
@@ -54,6 +61,7 @@ const CategoriesFields = ({
           placeholder="Select a category"
           styles={{ control: controlStylesFn }}
           defaultOptions
+          defaultValue={initialDefaultValues}
           loadOptions={fetchCategoriesOnInputChange}
           onChange={handleSelectionChange}
           onBlur={() => newCategoriesInputRef.current.blur()}
