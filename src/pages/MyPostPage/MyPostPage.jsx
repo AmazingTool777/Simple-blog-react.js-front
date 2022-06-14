@@ -1,7 +1,10 @@
+import { useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
+import Modal from "react-bootstrap/Modal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // Styles
 import "./MyPostPage.css";
@@ -16,6 +19,8 @@ import CategoriesFields from "../../components/CategoriesFields";
 
 // Wrapper component for the my post page content
 const MyPostPageContent = ({ post, onPostUpdated }) => {
+  const [deleteShow, setDeleteShow] = useState(false);
+
   const {
     textFieldsValues,
     textFieldsTouched,
@@ -35,7 +40,17 @@ const MyPostPageContent = ({ post, onPostUpdated }) => {
     handleCategoriesFieldChange,
     handleAddNewCategoryAdd,
     handleNewCategoryDelete,
+    isDeleting,
+    handlePostDelete,
   } = useMyPost(post, onPostUpdated);
+
+  const handleDeleteShow = useCallback(
+    (show) => () => {
+      if (!show && isDeleting) return;
+      setDeleteShow(show);
+    },
+    [isDeleting]
+  );
 
   return (
     <>
@@ -84,7 +99,7 @@ const MyPostPageContent = ({ post, onPostUpdated }) => {
           </div>
         </form>
       </section>
-      <section className="my-post-form-section">
+      <section className="my-post-form-section mb-5">
         <h4 className="mb-4">Categories</h4>
         <form onSubmit={handleCategoriesSubmit} onReset={handleCategoriesReset}>
           <CategoriesFields
@@ -108,6 +123,43 @@ const MyPostPageContent = ({ post, onPostUpdated }) => {
             </Button>
           </div>
         </form>
+      </section>
+      <section>
+        <Button type="button" variant="danger" size="lg" disabled={isDeleting} onClick={handleDeleteShow(true)}>
+          <FontAwesomeIcon icon="trash" className="me-2" />
+          Delete post
+        </Button>
+        <Modal
+          show={deleteShow}
+          onHide={handleDeleteShow(false)}
+          centered
+          size="sm"
+          aria-labelledby="post-deletion-modal"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="post-deletion-modal">Post deletion confirmation</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p className="mb-0 lead">Do you really want to delete this post?</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <div className="d-flex justify-content-end">
+              <Button
+                type="button"
+                variant="outline-secondary"
+                className="me-3"
+                disabled={isDeleting}
+                onClick={handleDeleteShow(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="button" variant="danger" disabled={isDeleting} onClick={handlePostDelete}>
+                Confirm
+                {isDeleting && <Spinner animation="border" size="sm" variant="light" className="ms-2" />}
+              </Button>
+            </div>
+          </Modal.Footer>
+        </Modal>
       </section>
     </>
   );
