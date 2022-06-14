@@ -93,6 +93,7 @@ const CategoriesFields = ({
         {newCategories.map((category) => (
           <CategorySelectBullet
             key={category.label}
+            isDisabled={isDisabled}
             category={category}
             className="me-2"
             onDelete={onNewCategoryDelete}

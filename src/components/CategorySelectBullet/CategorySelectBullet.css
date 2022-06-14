@@ -2,6 +2,10 @@
   border-radius: 0.25rem;
   font-size: 0.875rem;
 }
+.category-select-bullet.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 .category-select-bullet .label {
   font-weight: 600;
