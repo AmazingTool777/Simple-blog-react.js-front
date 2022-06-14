@@ -68,4 +68,13 @@ async function updatePostCategories(id, categories, newCategories) {
   ).data;
 }
 
-export { fetchPaginatedPosts, fetchPost, addPost, updatePostTextFields, updatePostCategories };
+// Deletes a user's post
+async function deletePost(id) {
+  const token = localStorage.getItem("access-token");
+  const URL = `${ENDPOINT}/${id}`;
+  await axios.delete(URL, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+export { fetchPaginatedPosts, fetchPost, addPost, updatePostTextFields, updatePostCategories, deletePost };
