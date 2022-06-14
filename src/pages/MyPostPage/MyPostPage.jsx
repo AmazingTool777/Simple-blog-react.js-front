@@ -12,6 +12,7 @@ import usePost from "../../hooks/usePost";
 
 // Components
 import AppBreadcrumbNav from "../../components/AppBreadcrumbNav";
+import CategoriesFields from "../../components/CategoriesFields";
 
 // Wrapper component for the my post page content
 const MyPostPageContent = ({ post, onPostUpdated }) => {
@@ -24,6 +25,16 @@ const MyPostPageContent = ({ post, onPostUpdated }) => {
     handleTextFieldsBlur,
     handleTextFieldsReset,
     handleTextFieldsSubmit,
+    categoriesValues,
+    categoriesIsSubmitting,
+    categoriesErrors,
+    categoriesTouched,
+    handleCategoriesBlur,
+    handleCategoriesSubmit,
+    handleCategoriesReset,
+    handleCategoriesFieldChange,
+    handleAddNewCategoryAdd,
+    handleNewCategoryDelete,
   } = useMyPost(post, onPostUpdated);
 
   return (
@@ -31,7 +42,7 @@ const MyPostPageContent = ({ post, onPostUpdated }) => {
       <div className="my-5">
         <img src={post.photoURL} alt={post.title} className="my-post-photo" />
       </div>
-      <section className="my-post-form-section">
+      <section className="my-post-form-section mb-5">
         <h4 className="mb-4">Text fields</h4>
         <form onSubmit={handleTextFieldsSubmit} onReset={handleTextFieldsReset}>
           <Form.Group controlId="my-post-title" className="mb-3">
@@ -68,6 +79,31 @@ const MyPostPageContent = ({ post, onPostUpdated }) => {
               {textFieldsIsSubmitting && <Spinner animation="border" variant="light" size="sm" className="ms-3" />}
             </Button>
             <Button type="reset" variant="outline-secondary" className="ms-3" disabled={textFieldsIsSubmitting}>
+              Cancel
+            </Button>
+          </div>
+        </form>
+      </section>
+      <section className="my-post-form-section">
+        <h4 className="mb-4">Categories</h4>
+        <form onSubmit={handleCategoriesSubmit} onReset={handleCategoriesReset}>
+          <CategoriesFields
+            isDisabled={categoriesIsSubmitting}
+            initialCategories={post.categories}
+            newCategories={categoriesValues.newCategories}
+            error={categoriesErrors.categories}
+            isTouched={categoriesTouched.categories}
+            onBlur={handleCategoriesBlur}
+            onSelectChange={handleCategoriesFieldChange}
+            onNewCategoryAdd={handleAddNewCategoryAdd}
+            onNewCategoryDelete={handleNewCategoryDelete}
+          />
+          <div className="mt-4 d-flex">
+            <Button type="submit" variant="primary" disabled={categoriesIsSubmitting}>
+              Save
+              {categoriesIsSubmitting && <Spinner animation="border" variant="light" size="sm" className="ms-3" />}
+            </Button>
+            <Button type="reset" variant="outline-secondary" className="ms-3" disabled={categoriesIsSubmitting}>
               Cancel
             </Button>
           </div>
