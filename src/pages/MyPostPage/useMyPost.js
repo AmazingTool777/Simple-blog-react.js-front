@@ -64,7 +64,7 @@ export default function useMyPost(post, onPostUpdated) {
         const updatedPost = await updatePostTextFields(post._id, values);
         setSubmitting(false);
         onPostUpdated(updatedPost);
-        handleToastAdd(generateSuccessOpToastMessage("Your post's text fields has been updated successfully"));
+        handleToastAdd(generateSuccessOpToastMessage("Your post's text fields have been updated successfully"));
       } catch (error) {
         console.log(error);
         setSubmitting(false);
@@ -105,7 +105,6 @@ export default function useMyPost(post, onPostUpdated) {
         categories: values.categories.map((category) => category._id),
         newCategories: values.newCategories.map((category) => category.label),
       };
-      console.log(categoriesData);
       try {
         const updatedPost = await updatePostCategories(
           post._id,
@@ -114,12 +113,13 @@ export default function useMyPost(post, onPostUpdated) {
         );
         setSubmitting(false);
         onPostUpdated(updatedPost);
+        handleToastAdd(generateSuccessOpToastMessage("Your post's categories have been updated successfully"));
       } catch (error) {
         console.log(error);
         setSubmitting(false);
       }
     },
-    [post, onPostUpdated]
+    [post, onPostUpdated, handleToastAdd]
   );
 
   // Formik variables to be used for the categories fields
