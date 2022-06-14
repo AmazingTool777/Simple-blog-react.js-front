@@ -56,4 +56,16 @@ async function updatePostTextFields(id, values) {
   ).data;
 }
 
-export { fetchPaginatedPosts, fetchPost, addPost, updatePostTextFields };
+// Updates a post's categories
+async function updatePostCategories(id, categories, newCategories) {
+  const token = localStorage.getItem("access-token");
+  const URL = `${ENDPOINT}/${id}/categories`;
+  const data = { categories, newCategories };
+  return (
+    await axios.put(URL, data, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  ).data;
+}
+
+export { fetchPaginatedPosts, fetchPost, addPost, updatePostTextFields, updatePostCategories };
