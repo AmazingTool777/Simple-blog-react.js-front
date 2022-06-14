@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // API calls
-import { updatePostTextFields, updatePostCategories } from "../../apis/posts-api";
+import { updatePostTextFields, updatePostCategories, deletePost } from "../../apis/posts-api";
 
 // Other custom hooks
 import useToasts from "../../hooks/useToasts";
@@ -26,14 +27,14 @@ const categoriesValidationSchema = Yup.object({
 });
 
 // Generates a successful toast message for the local operations
-function generateSuccessOpToastMessage(content) {
+function generateSuccessOpToastMessage(title, content) {
   return {
     type: "OPERATION_MESSAGE",
     message: {
       title: (
         <>
           <FontAwesomeIcon icon="check-circle" className="text-success me-3" />
-          Successful update
+          {title}
         </>
       ),
       content: <p className="mb-0 text-success">{content}</p>,
@@ -45,6 +46,10 @@ function generateSuccessOpToastMessage(content) {
 
 // Custom hook for the my post page
 export default function useMyPost(post, onPostUpdated) {
+  const [isDeleting, setDeleting] = useState(false);
+
+  const navigate = useNavigate();
+
   const { handleToastAdd } = useToasts();
 
   // Initial values for the post's text fields handled by formik
@@ -64,7 +69,9 @@ export default function useMyPost(post, onPostUpdated) {
         const updatedPost = await updatePostTextFields(post._id, values);
         setSubmitting(false);
         onPostUpdated(updatedPost);
-        handleToastAdd(generateSuccessOpToastMessage("Your post's text fields have been updated successfully"));
+        handleToastAdd(
+          generateSuccessOpToastMessage("Successful update", "Your post's text fields have been updated successfully")
+        );
       } catch (error) {
         console.log(error);
         setSubmitting(false);
@@ -100,7 +107,7 @@ export default function useMyPost(post, onPostUpdated) {
 
   // Handles the submission of the categories to the API
   const handleCategoriesApiSubmit = useCallback(
-    async (values, { setSubmitting, setFieldValue }) => {
+    async (values, { setSubmitting }) => {
       const categoriesData = {
         categories: values.categories.map((category) => category._id),
         newCategories: values.newCategories.map((category) => category.label),
@@ -113,13 +120,15 @@ export default function useMyPost(post, onPostUpdated) {
         );
         setSubmitting(false);
         onPostUpdated(updatedPost);
-        handleToastAdd(generateSuccessOpToastMessage("Your post's categories have been updated successfully"));
+        handleToastAdd(
+          generateSuccessOpToastMessage("Successful update", "Your post's categories have been updated successfully")
+        );
       } catch (error) {
         console.log(error);
         setSubmitting(false);
       }
     },
-    [post, onPostUpdated, handleToastAdd]
+    [post._id, onPostUpdated, handleToastAdd]
   );
 
   // Formik variables to be used for the categories fields
@@ -173,7 +182,19 @@ export default function useMyPost(post, onPostUpdated) {
   useEffect(() => {
     setCategoriesFieldValue("categories", post.categories);
     setCategoriesFieldValue("newCategories", []);
-  }, [post, setCategoriesFieldValue]);
+  }, [post.categories, setCategoriesFieldValue]);
+
+  const handlePostDelete = useCallback(async () => {
+    try {
+      setDeleting(true);
+      await deletePost(post._id);
+      handleToastAdd(generateSuccessOpToastMessage("Successful deletion", "Your post has been deleted successfully"));
+      navigate("/personal-space/posts");
+    } catch (error) {
+      console.log(error);
+      setDeleting(false);
+    }
+  }, [handleToastAdd, navigate, post._id]);
 
   return {
     post,
@@ -195,5 +216,7 @@ export default function useMyPost(post, onPostUpdated) {
     handleCategoriesFieldChange,
     handleAddNewCategoryAdd,
     handleNewCategoryDelete,
+    isDeleting,
+    handlePostDelete,
   };
 }
