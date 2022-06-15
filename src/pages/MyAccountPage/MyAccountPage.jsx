@@ -7,6 +7,7 @@ import useMyAccount from "./useMyAccount";
 import ProfilePhotoSection from "./ProfilePhotoSection";
 import PersoInfoSection from "./PersoInfoSection";
 import MyAccountPageLoaders from "./MyAccountPageLoaders";
+import ModifyPwdSection from "./ModifyPwdSection";
 
 const MyAccountPage = () => {
   const { user, isLoading, hasFetched, handleProfilePhotoUpdated } = useMyAccount();
@@ -23,6 +24,7 @@ const MyAccountPage = () => {
         <>
           <ProfilePhotoSection user={user} onPhotoUpdated={handleProfilePhotoUpdated} />
           <PersoInfoSection />
+          <ModifyPwdSection />
         </>
       )}
     </section>
