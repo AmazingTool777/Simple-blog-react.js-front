@@ -1,12 +1,12 @@
+#add-post-page .form-container {
+  min-height: calc(100vh - 56px - 3rem); /* 56px: Height of the navbar */
+}
+
 form#add-post-form {
   display: grid;
   grid-template-columns: auto;
   grid-template-rows: auto auto auto;
   grid-template-areas: "title" "photo" "content-categories-actions";
-}
-
-form#add-post-form .form-container {
-  min-height: calc(100vh - 56px); /* 56px: Height of the navbar */
 }
 
 form#add-post-form .post-title-group {
