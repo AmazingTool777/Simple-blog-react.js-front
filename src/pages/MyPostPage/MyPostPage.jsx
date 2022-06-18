@@ -16,6 +16,7 @@ import usePost from "../../hooks/usePost";
 // Components
 import AppBreadcrumbNav from "../../components/AppBreadcrumbNav";
 import CategoriesFields from "../../components/CategoriesFields";
+import NotFoundFiller from "../../components/NotFoundFiller";
 
 // Wrapper component for the my post page content
 const MyPostPageContent = ({ post, onPostUpdated }) => {
@@ -168,7 +169,7 @@ const MyPostPageContent = ({ post, onPostUpdated }) => {
 const MyPostPage = () => {
   const { postId } = useParams();
 
-  const { isLoading, post, handlePostChange } = usePost(postId);
+  const { isLoading, post, hasFetched, handlePostChange } = usePost(postId);
 
   return (
     <section id="my-post-page">
@@ -179,7 +180,12 @@ const MyPostPage = () => {
         title={post && post.title}
         notFoundMessage="Post not found"
       />
-      {!isLoading && post && <MyPostPageContent post={post} onPostUpdated={handlePostChange} />}
+      {!isLoading && hasFetched && (
+        <>
+          {post && <MyPostPageContent post={post} onPostUpdated={handlePostChange} />}
+          {!post && <NotFoundFiller />}
+        </>
+      )}
     </section>
   );
 };

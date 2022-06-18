@@ -6,6 +6,7 @@ import { fetchPost } from "../apis/posts-api";
 function usePost(postId) {
   const [post, setPost] = useState(null);
   const [isLoading, setLoading] = useState(false);
+  const [hasFetched, setHasFetched] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -14,13 +15,16 @@ function usePost(postId) {
         console.log(post);
         setLoading(false);
         setPost(post);
+        setHasFetched(true);
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false);
+        setHasFetched(true);
       });
   }, [postId]);
 
-  return { post, isLoading, handlePostChange: setPost };
+  return { post, isLoading, hasFetched, handlePostChange: setPost };
 }
 
 export default usePost;
