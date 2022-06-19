@@ -47,11 +47,18 @@ async function updateUserPhoto(userId, photoData) {
   return (await axios.put(URL, photoData, { headers: { Authorization: `Bearer ${token}` } })).data;
 }
 
-// Updates the user's persnal information
+// Updates the user's personal information
 async function updateUserPersoInfo(userId, userData) {
   const URL = `${ENDPOINT}/${userId}`;
   const token = localStorage.getItem("access-token");
   return (await axios.put(URL, userData, { headers: { Authorization: `Bearer ${token}` } })).data;
+}
+
+// Updates the user's password
+async function updateUserPassword(userId, passwordData) {
+  const URL = `${ENDPOINT}/${userId}/password`;
+  const token = localStorage.getItem("access-token");
+  return (await axios.put(URL, passwordData, { headers: { Authorization: `Bearer ${token}` } })).data;
 }
 
 export {
@@ -62,4 +69,5 @@ export {
   fetchUser,
   updateUserPhoto,
   updateUserPersoInfo,
+  updateUserPassword,
 };
