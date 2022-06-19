@@ -61,6 +61,13 @@ async function updateUserPassword(userId, passwordData) {
   return (await axios.put(URL, passwordData, { headers: { Authorization: `Bearer ${token}` } })).data;
 }
 
+// Deletes the user's account
+async function deleteUserAccount(userId, passwordData) {
+  const URL = `${ENDPOINT}/${userId}`;
+  const token = localStorage.getItem("access-token");
+  await axios.delete(URL, { headers: { Authorization: `Bearer ${token}` }, data: passwordData });
+}
+
 export {
   signupUser,
   authenticateUserFromToken,
@@ -70,4 +77,5 @@ export {
   updateUserPhoto,
   updateUserPersoInfo,
   updateUserPassword,
+  deleteUserAccount,
 };
