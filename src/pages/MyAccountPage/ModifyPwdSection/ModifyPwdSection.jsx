@@ -1,13 +1,18 @@
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import Spinner from "react-bootstrap/Spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // Custom hooks
 import useModifyPassword from "./useModifyPassword";
+import useCheckIfUpdated from "../../../hooks/useCheckIfUpdated";
 
 const ModifyPwdSection = () => {
+  /* We hold a ref for the submit button */
+  const submitBtnRef = useRef(null);
+
   const [show, setShow] = useState(false);
 
   const {
@@ -16,6 +21,8 @@ const ModifyPwdSection = () => {
     passwordConfirmation,
     errors,
     touched,
+    forceHide,
+    isSubmitting,
     handleChange,
     handleBlur,
     handleSubmit,
@@ -30,13 +37,21 @@ const ModifyPwdSection = () => {
     [handleReset]
   );
 
+  const isUpdated = useCheckIfUpdated();
+
+  /* Forcing the password update modal to hide */
+  useEffect(() => {
+    if (isUpdated) handleShow(false)();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [forceHide]);
+
   return (
     <section className="mt-5">
       <Button type="button" variant="warning" size="lg" onClick={handleShow(true)}>
         <FontAwesomeIcon icon="lock" className="me-3" />
         Change password
       </Button>
-      <Form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <Modal show={show} size="md" backdrop="static" onHide={handleShow(false)}>
           <Modal.Header closeButton>
             <Modal.Title>
@@ -52,6 +67,7 @@ const ModifyPwdSection = () => {
                 name="currPassword"
                 value={currPassword}
                 isInvalid={touched.currPassword && !!errors.currPassword}
+                disabled={isSubmitting}
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
@@ -64,18 +80,20 @@ const ModifyPwdSection = () => {
                 name="password"
                 value={password}
                 isInvalid={touched.password && !!errors.password}
+                disabled={isSubmitting}
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
               <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="user-password-confirmation">
-              <Form.Label>Your new password:</Form.Label>
+              <Form.Label>Password confirmation:</Form.Label>
               <Form.Control
                 type="password"
                 name="passwordConfirmation"
                 value={passwordConfirmation}
                 isInvalid={touched.passwordConfirmation && !!errors.passwordConfirmation}
+                disabled={isSubmitting}
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
@@ -84,16 +102,29 @@ const ModifyPwdSection = () => {
           </Modal.Body>
           <Modal.Footer>
             <div className="d-flex justify-content-end">
-              <Button type="button" variant="outline-secondary" className="me-3" onClick={handleShow(false)}>
+              <Button
+                type="button"
+                disabled={isSubmitting}
+                variant="outline-secondary"
+                className="me-3"
+                onClick={handleShow(false)}
+              >
                 Cancel
               </Button>
-              <Button type="submit" variant="warning">
+              <Button
+                type="button"
+                disabled={isSubmitting}
+                variant="warning"
+                onClick={() => submitBtnRef.current.click()}
+              >
                 Confirm
+                {isSubmitting && <Spinner animation="border" variant="dark" size="sm" className="ms-2" />}
               </Button>
             </div>
           </Modal.Footer>
         </Modal>
-      </Form>
+        <button ref={submitBtnRef} type="submit" style={{ display: "none" }}></button>
+      </form>
     </section>
   );
 };
