@@ -12,7 +12,6 @@ function usePost(postId) {
     setLoading(true);
     fetchPost(postId)
       .then((post) => {
-        console.log(post);
         setLoading(false);
         setPost(post);
         setHasFetched(true);
