@@ -1,5 +1,7 @@
+import { Link, useLocation } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -18,6 +20,9 @@ const MyPostsPage = () => {
   const { posts, page, order, isLoading, count, pages, handleOrderChange, handleSearchChange } = useUserPosts(
     currentUser._id
   );
+
+  const { pathname, search } = useLocation();
+  const location = `${pathname}${search}`;
 
   return (
     <section className="my-posts-page">
@@ -62,6 +67,17 @@ const MyPostsPage = () => {
           </Col>
         )}
       </Row>
+      <Button
+        as={Link}
+        to="/add-post"
+        state={{ from: location }}
+        type="button"
+        variant="primary"
+        style={{ position: "fixed", right: "1rem", bottom: "1rem", zIndex: "1000" }}
+      >
+        <FontAwesomeIcon icon="plus" className="me-2" />
+        Create a post
+      </Button>
     </section>
   );
 };

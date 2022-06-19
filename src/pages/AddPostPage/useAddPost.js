@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -45,6 +45,8 @@ function useAddPost() {
 
   const navigate = useNavigate();
 
+  const { state } = useLocation();
+
   // Handles the progress of the upload
   const handleUploadProgress = useCallback((percentage) => setUploadProgress(percentage), []);
 
@@ -65,14 +67,14 @@ function useAddPost() {
         await addPost(postData, handleUploadProgress);
         setProgressShow(false);
         // Redirection
-        navigate("/posts");
+        navigate(state.from ? state.from : "/posts");
       } catch (error) {
         console.log(error);
         setProgressShow(false);
         setSubmitting(false);
       }
     },
-    [handleUploadProgress, navigate]
+    [handleUploadProgress, navigate, state.from]
   );
 
   const { values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit, setFieldValue } = useFormik({
