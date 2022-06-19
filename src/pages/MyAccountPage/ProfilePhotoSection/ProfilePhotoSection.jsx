@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, memo } from "react";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -82,4 +82,4 @@ const ProfilePhotoSection = ({ user, onPhotoUpdated }) => {
   );
 };
 
-export default ProfilePhotoSection;
+export default memo(ProfilePhotoSection);

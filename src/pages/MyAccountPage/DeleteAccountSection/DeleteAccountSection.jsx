@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, memo } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -80,4 +80,4 @@ const DeleteAccountSection = () => {
   );
 };
 
-export default DeleteAccountSection;
+export default memo(DeleteAccountSection);
