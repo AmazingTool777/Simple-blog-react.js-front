@@ -15,7 +15,9 @@ async function signupUser(signupData) {
 async function authenticateUserFromToken() {
   const ENDPOINT = `${apiConfig.URL}/tokenUser`;
   const token = localStorage.getItem("access-token");
-  return (await axios.get(ENDPOINT, { headers: { Authorization: `Bearer ${token}` } })).data;
+  const responseData = (await axios.get(ENDPOINT, { headers: { Authorization: `Bearer ${token}` } })).data;
+  localStorage.setItem("access-token", responseData.token);
+  return responseData.user;
 }
 
 // Logs in a user
@@ -41,13 +43,15 @@ async function fetchUser(id) {
 // Updates a user's profile phto
 async function updateUserPhoto(userId, photoData) {
   const URL = `${ENDPOINT}/${userId}/photo`;
-  return (await axios.put(URL, photoData)).data;
+  const token = localStorage.getItem("access-token");
+  return (await axios.put(URL, photoData, { headers: { Authorization: `Bearer ${token}` } })).data;
 }
 
 // Updates the user's persnal information
 async function updateUserPersoInfo(userId, userData) {
   const URL = `${ENDPOINT}/${userId}`;
-  return (await axios.put(URL, userData)).data;
+  const token = localStorage.getItem("access-token");
+  return (await axios.put(URL, userData, { headers: { Authorization: `Bearer ${token}` } })).data;
 }
 
 export {
