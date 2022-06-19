@@ -20,6 +20,9 @@ const PostPage = () => {
   const { postId } = useParams();
 
   const { post, isLoading } = usePost(postId);
+  const author = post ? post.author : null;
+
+  const authorImgAlt = author ? `${author.firstName} ${author.lastName}'s photo` : "";
 
   return (
     <section id="post-page">
@@ -35,7 +38,7 @@ const PostPage = () => {
         <article id="post-article" className="pt-4">
           <h1 className="mb-4 text-center">{post.title}</h1>
           <section className="author-section mb-3 mx-auto">
-            <UserAvatar />
+            <UserAvatar src={author.photoURL} gender={author.gender} alt={authorImgAlt} />
             <strong className="author-name">
               <Link to={`/users/${post.author._id}`} className="text-decoration-none">
                 {post.author.firstName} {post.author.lastName}
