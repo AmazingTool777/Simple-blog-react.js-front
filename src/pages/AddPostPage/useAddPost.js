@@ -46,6 +46,7 @@ function useAddPost() {
   const navigate = useNavigate();
 
   const { state } = useLocation();
+  const from = state && state.from ? state.from : null;
 
   // Handles the progress of the upload
   const handleUploadProgress = useCallback((percentage) => setUploadProgress(percentage), []);
@@ -67,14 +68,14 @@ function useAddPost() {
         await addPost(postData, handleUploadProgress);
         setProgressShow(false);
         // Redirection
-        navigate(state.from ? state.from : "/posts");
+        navigate(from ? from : "/posts");
       } catch (error) {
         console.log(error);
         setProgressShow(false);
         setSubmitting(false);
       }
     },
-    [handleUploadProgress, navigate, state.from]
+    [handleUploadProgress, navigate, from]
   );
 
   const { values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit, setFieldValue } = useFormik({
