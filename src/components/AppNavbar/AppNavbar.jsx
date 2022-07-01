@@ -12,9 +12,11 @@ import useCurrentUser from "../../hooks/useCurrentUser";
 import { useSignupDialog } from "../../contexts/signoutDialog";
 
 const AppNavbar = () => {
-  const { isLoggedIn } = useCurrentUser();
+  const { isLoggedIn, currentUser } = useCurrentUser();
 
   const { handleSignoutModalShow } = useSignupDialog();
+
+  const fullName = `${currentUser.firstName} ${currentUser.lastName}`;
 
   return (
     <Navbar bg="primary" variant="dark" expand="md" sticky="top" className="shadow-sm">
@@ -35,7 +37,7 @@ const AppNavbar = () => {
               Users
             </Nav.Link>
             {isLoggedIn ? (
-              <NavDropdown title="Personal space">
+              <NavDropdown title={fullName}>
                 <NavDropdown.Item as={NavLink} to="/personal-space/account">
                   <FontAwesomeIcon icon="user" className="me-2" />
                   My account
