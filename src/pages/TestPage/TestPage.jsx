@@ -1,68 +1,43 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState } from "react";
+
+// API calls
+import { fetchPaginatedPosts } from "../../apis/posts-api";
 
 // Custom hooks
-import useToasts from "../../hooks/useToasts";
-
-// Components
-import BrowsingToasts from "../../components/BrowsingToasts";
+import usePaginatedApiCall from "../../hooks/usePaginatedApiCall";
 
 // Styles
 import "./TestPage.css";
 
 const TestPage = () => {
-  const [count, setCount] = useState(0);
-  const [doneCount, setDoneCount] = useState(0);
+  const [page, setPage] = useState(1);
 
-  const incrementCountRef = useRef(null);
-
-  const { handleToastAdd } = useToasts();
-
-  const handleAdd = useCallback(() => {
-    handleToastAdd({
-      type: "BROWSING_MESSAGE",
-      message: { title: "Notification message", content: "You received 2 new messages", duration: 2000, delay: 1000 },
-    });
-  }, [handleToastAdd]);
-
-  const incrementCount = useCallback(() => setCount(count + 1), [count]);
-  incrementCountRef.current = incrementCount;
-
-  const LIMIT = 5;
-
-  useEffect(() => {
-    console.log(count);
-    if (count >= 1) {
-      handleAdd();
-      setDoneCount(doneCount + 1);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [count]);
-
-  useEffect(() => {
-    console.log(doneCount);
-    if (count <= LIMIT) {
-      setTimeout(incrementCountRef.current, 1000);
-      return () => clearTimeout(incrementCountRef.current);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [doneCount]);
-
-  /* useEffect(() => {
-    if (count < LIMIT) {
-      setTimeout(incrementCount, 5000);
-      return () => clearTimeout(incrementCount);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [toasts]);
-
-  useEffect(() => {
-    if (count >= 1) addToast();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [count]); */
+  const [posts, isLoading, count, pages] = usePaginatedApiCall(
+    () => {
+      const LIMIT = 2;
+      return fetchPaginatedPosts(page, LIMIT, "desc", "");
+    },
+    {
+      merge: true,
+      key: "_id",
+      isInitial: page === 1,
+    },
+    [page]
+  );
 
   return (
     <div id="test-page">
-      <BrowsingToasts />
+      <ul>
+        {posts.map((post) => (
+          <li key={post._id}>{post.title}</li>
+        ))}
+      </ul>
+      {isLoading && <p>Loading ...</p>}
+      {page >= pages && <p>End of results</p>}
+      <div>
+        <button onClick={() => setPage(page + 1)}>+</button>
+      </div>
+      <p>{count} results</p>
     </div>
   );
 };
