@@ -50,4 +50,11 @@
   text-indent: 3rem;
   white-space: pre-line;
   text-align: justify;
+  font-size: 1rem;
+}
+
+@media screen and (min-width: 992px) {
+  #post-page .post-content {
+    font-size: 1.25rem;
+  }
 }
