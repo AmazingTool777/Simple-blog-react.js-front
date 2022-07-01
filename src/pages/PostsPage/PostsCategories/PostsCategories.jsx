@@ -16,7 +16,7 @@ import PostsCategoriesModal from "../PostsCategoriesModal";
 import usePostsCategories from "../usePostsCategories";
 
 const PostsCategories = ({ isDisabled, categoryId, onCategoryIdSelect }) => {
-  const { categories: _categories, page, isLoading, handlePageChange } = usePostsCategories(false);
+  const { categories: _categories, page, isLoading, handlePageChange } = usePostsCategories(true);
 
   /* Moving the active category bullet to the first
    Adding a bullet labelled "All" if no category is provided */
