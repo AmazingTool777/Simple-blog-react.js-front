@@ -16,7 +16,7 @@ const AppNavbar = () => {
 
   const { handleSignoutModalShow } = useSignupDialog();
 
-  const fullName = `${currentUser.firstName} ${currentUser.lastName}`;
+  const fullName = isLoggedIn ? `${currentUser.firstName} ${currentUser.lastName}` : "";
 
   return (
     <Navbar bg="primary" variant="dark" expand="md" sticky="top" className="shadow-sm">
