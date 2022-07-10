@@ -22,7 +22,7 @@ const PostPage = () => {
   const { post, isLoading } = usePost(postId);
   const author = post ? post.author : null;
 
-  const authorImgAlt = author ? `${author.firstName} ${author.lastName}'s photo` : "";
+  const authorImgAlt = author ? `${author.firstName} ${author.lastName}'s photo` : "The author";
 
   return (
     <section id="post-page">
@@ -56,7 +56,7 @@ const PostPage = () => {
           </figure>
           <p className="post-content lead my-4">{post.content}</p>
           <section className="post-categories">
-            <h5 className="text-muted mb-4">Categories:</h5>
+            <h5 className="text-muted mb-3">Categories:</h5>
             {post.categories.length > 0 ? (
               <ul className="list-unstyled d-flex flex-wrap">
                 {post.categories.map((category) => (
