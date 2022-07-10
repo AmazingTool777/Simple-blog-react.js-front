@@ -77,4 +77,22 @@ async function deletePost(id) {
   });
 }
 
-export { fetchPaginatedPosts, fetchPost, addPost, updatePostTextFields, updatePostCategories, deletePost };
+// Adds a post's comment
+async function addPostComment(postId, commentData) {
+  const URL = `${ENDPOINT}/${postId}/comments`;
+  const token = localStorage.getItem("access-token");
+  const response = await axios.post(URL, commentData, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+}
+
+export {
+  fetchPaginatedPosts,
+  fetchPost,
+  addPost,
+  updatePostTextFields,
+  updatePostCategories,
+  deletePost,
+  addPostComment,
+};
