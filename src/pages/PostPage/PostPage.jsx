@@ -16,6 +16,7 @@ import CategoryBullet from "../../components/CategoryBullet";
 import PostPageLoaders from "./PostPageLoaders";
 import AppBreadcrumbNav from "../../components/AppBreadcrumbNav";
 import LikesCommentsBar from "./LikesCommentsBar";
+import CommentsSection from "./CommentsSection";
 
 const PostPage = () => {
   const { postId } = useParams();
@@ -71,6 +72,7 @@ const PostPage = () => {
             )}
           </section>
           <LikesCommentsBar likesCount={post.likesCount} commentsCount={post.commentsCount} isLiked={!!post.like} />
+          <CommentsSection post={post} />
         </article>
       )}
     </section>
