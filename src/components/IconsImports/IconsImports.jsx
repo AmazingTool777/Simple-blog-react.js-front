@@ -24,6 +24,8 @@ import {
   faPenSquare,
   faTrash,
   faUserTimes,
+  faHeart,
+  faComment,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -50,7 +52,9 @@ library.add(
   faEnvelope,
   faPenSquare,
   faTrash,
-  faUserTimes
+  faUserTimes,
+  faHeart,
+  faComment
 );
 
 const IconsImports = ({ children }) => {

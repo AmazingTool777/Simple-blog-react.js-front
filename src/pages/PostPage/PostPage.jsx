@@ -15,6 +15,7 @@ import UserAvatar from "../../components/UserAvatar";
 import CategoryBullet from "../../components/CategoryBullet";
 import PostPageLoaders from "./PostPageLoaders";
 import AppBreadcrumbNav from "../../components/AppBreadcrumbNav";
+import LikesCommentsBar from "./LikesCommentsBar";
 
 const PostPage = () => {
   const { postId } = useParams();
@@ -69,6 +70,7 @@ const PostPage = () => {
               <p className="text-secondary">No categories</p>
             )}
           </section>
+          <LikesCommentsBar likesCount={post.likesCount} commentsCount={post.commentsCount} isLiked={!!post.like} />
         </article>
       )}
     </section>

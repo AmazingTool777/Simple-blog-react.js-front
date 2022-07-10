@@ -1,0 +1,13 @@
+#likes-comments-bar .lc-button {
+  font-size: 1.5rem;
+  color: #6c757d;
+}
+
+#likes-comments-bar button {
+  transition: 0.3s;
+}
+
+#likes-comments-bar .lc-button.active,
+#likes-comments-bar button:hover {
+  color: #0d6efd;
+}
