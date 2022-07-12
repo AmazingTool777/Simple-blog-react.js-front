@@ -13,14 +13,21 @@ import useCheckIfUpdated from "../../../hooks/useCheckIfUpdated";
 // Components
 import UserAvatar from "../../../components/UserAvatar";
 
-const CommentBullet = ({ post, comment }) => {
+const CommentBullet = ({ post, comment, onCommentModified, onCommentDeleted }) => {
   const [modifIsOpen, setModifOpen] = useState(false);
   const [relTime, setRelTime] = useState(getRelativeTime(new Date(comment.createdAt), new Date()).relativeTime);
 
-  const handleCommentModified = useCallback(() => setModifOpen(false), []);
+  const handleCommentModified = useCallback(
+    (modifiedComment) => {
+      onCommentModified(modifiedComment);
+      setModifOpen(false);
+    },
+    [onCommentModified]
+  );
 
   const { content, isSubmitting, handleContentChange, resetModifContent } = useComment(post._id, comment, {
     onCommentModified: handleCommentModified,
+    onCommentDeleted,
   });
 
   const isUpdated = useCheckIfUpdated();
