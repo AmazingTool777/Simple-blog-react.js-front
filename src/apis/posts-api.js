@@ -77,6 +77,20 @@ async function deletePost(id) {
   });
 }
 
+// Gets a post's comments
+async function fetchPaginatedComments(postId, page = 1, limit = 10, order = "desc") {
+  const URL = `${ENDPOINT}/${postId}/comments`;
+  return (
+    await axios.get(URL, {
+      params: {
+        page,
+        limit,
+        order,
+      },
+    })
+  ).data;
+}
+
 // Adds a post's comment
 async function addPostComment(postId, commentData) {
   const URL = `${ENDPOINT}/${postId}/comments`;
@@ -95,4 +109,5 @@ export {
   updatePostCategories,
   deletePost,
   addPostComment,
+  fetchPaginatedComments,
 };
