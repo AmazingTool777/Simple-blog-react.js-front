@@ -45,12 +45,12 @@ const CommentBullet = ({ post, comment }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [relTime]);
 
-  const { currentUser } = useCurrentUser();
+  const { currentUser, isLoggedIn } = useCurrentUser();
 
   const { user } = comment;
   const userAvatarAlt = `${user.firstName} ${user.lastName}'s profile`;
 
-  const belongsToCurrentUser = user._id === currentUser._id;
+  const belongsToCurrentUser = isLoggedIn ? user._id === currentUser._id : false;
 
   return (
     <div className="border border-1 rounded-3 py-3 px-2 d-flex align-items-start" style={{ borderColor: "#bbb" }}>
