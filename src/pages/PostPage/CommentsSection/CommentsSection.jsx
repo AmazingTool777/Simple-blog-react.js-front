@@ -3,14 +3,24 @@ import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 
 // Custom hooks
+import useComments from "./useComments";
 import useNewComment from "./useNewComment";
 
+// Components
+import CommentsList from "../CommentsList";
+
 const CommentsSection = ({ post }) => {
-  const { content, isSubmitting, handleContentChange, handleContentFocus, handleCommentSubmit } = useNewComment(post);
+  const { comments, isLoading, page, handleCommentAdded, handleCommentModified, handleCommentDeleted } =
+    useComments(post);
+
+  const { content, isSubmitting, handleContentChange, handleContentFocus, handleCommentSubmit } = useNewComment(
+    post,
+    handleCommentAdded
+  );
 
   return (
     <section id="post-comments">
-      <Form onSubmit={handleCommentSubmit}>
+      <Form onSubmit={handleCommentSubmit} className="mb-4">
         <Form.Group controlId="post-new-comment" className="mb-3">
           <Form.Label>Your comment:</Form.Label>
           <Form.Control
@@ -28,6 +38,15 @@ const CommentsSection = ({ post }) => {
           {isSubmitting && <Spinner animation="border" variant="light" size="sm" className="ms-2" />}
         </Button>
       </Form>
+      <CommentsList
+        comments={comments}
+        page={page}
+        isLoading={isLoading}
+        post={post}
+        count={post.commentsCount}
+        onCommentModified={handleCommentModified}
+        onCommentDeleted={handleCommentDeleted}
+      />
     </section>
   );
 };
