@@ -28,8 +28,9 @@ export function getRelativeTime(startDate, finishDate) {
   let relativeTime, nextUpdateTimeout;
   breakpoints.some(({ ceiling, unit }, i) => {
     if (timeDiff < ceiling) {
-      const prevCeiling = breakpoints[i - 1].ceiling;
-      if (unit === "Now") relativeTime = "Now";
+      const isNow = unit === "Now";
+      const prevCeiling = !isNow ? breakpoints[i - 1].ceiling : minuteMs;
+      if (isNow) relativeTime = "Now";
       else {
         const relativeTimeAmount = Math.floor(timeDiff / prevCeiling);
         relativeTime = `${relativeTimeAmount} ${unit}`;
