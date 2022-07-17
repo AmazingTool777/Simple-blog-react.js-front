@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from "react";
+import { useReducer, useEffect, useMemo, useCallback } from "react";
 import _ from "lodash";
 
 const initialState = {
@@ -14,6 +14,7 @@ const ACTIONS = {
   DATA_FETCHED: "DATA_FETCHED",
   FETCH_ERROR: "FETCH_ERROR",
   RESET: "RESET",
+  ROWS_SET: "ROWS_SET",
 };
 
 function reducer(state, action) {
@@ -37,6 +38,9 @@ function reducer(state, action) {
 
     case ACTIONS.RESET:
       return { isLoading: false, rows: [], count: 0, pages: 1, error: null };
+
+    case ACTIONS.ROWS_SET:
+      return { ...state, rows: action.payload.rows };
 
     default:
       new Error("Unknown dispatch action");
@@ -67,7 +71,21 @@ function usePaginatedApiCall(apiCall, options, dependencies) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [...dependencies]);
 
-  return [rows, isLoading, count, pages, error, reset];
+  // Modifies the rows
+  const setRows = useCallback(
+    (rows) =>
+      dispatch({
+        type: ACTIONS.ROWS_SET,
+        payload: { rows },
+      }),
+    []
+  );
+
+  const modifiers = useMemo(() => {
+    return { setRows };
+  }, [setRows]);
+
+  return [rows, isLoading, count, pages, error, reset, modifiers];
 }
 
 export default usePaginatedApiCall;
