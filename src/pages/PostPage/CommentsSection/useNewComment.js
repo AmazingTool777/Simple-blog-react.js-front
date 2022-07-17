@@ -12,7 +12,7 @@ export default function useNewComment(post, onCommentAdded = () => {}) {
   const [content, setContent] = useState("");
   const [isSubmitting, setSubmitting] = useState(false);
 
-  const { isLoggedIn } = useCurrentUser();
+  const { isLoggedIn, currentUser } = useCurrentUser();
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -34,6 +34,8 @@ export default function useNewComment(post, onCommentAdded = () => {}) {
       setSubmitting(true);
       try {
         const addedComment = await addPostComment(post._id, commentData);
+        // Replace the user as an object id from the server with the current user object
+        addedComment.user = currentUser;
         setSubmitting(false);
         setContent("");
         onCommentAdded(addedComment);
@@ -42,7 +44,7 @@ export default function useNewComment(post, onCommentAdded = () => {}) {
         console.log(error);
       }
     },
-    [content, onCommentAdded, post._id]
+    [content, onCommentAdded, post._id, currentUser]
   );
 
   return {
