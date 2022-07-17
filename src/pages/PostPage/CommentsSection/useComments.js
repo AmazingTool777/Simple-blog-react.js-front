@@ -13,7 +13,7 @@ const emptyFunction = () => {};
 export default function useComments(post, onCountChange = emptyFunction) {
   const [page, setPage] = useState(1);
 
-  const [comments, isLoading, count, pages] = usePaginatedApiCall(
+  const [comments, isLoading, count, pages, error, reset, modifiers] = usePaginatedApiCall(
     () => {
       const LIMIT = 10;
       return fetchPaginatedComments(post._id, page, LIMIT);
@@ -26,18 +26,36 @@ export default function useComments(post, onCountChange = emptyFunction) {
     [page]
   );
 
+  const handleCommentAdded = useCallback(
+    (addedComment) => {
+      const _comments = [...comments];
+      _comments.unshift(addedComment);
+      _comments.sort((c1, c2) => new Date(c2.createdAt).getTime() - new Date(c1.createdAt).getTime());
+      modifiers.setRows(_comments);
+    },
+    [comments, modifiers]
+  );
+
+  const handleCommentModified = useCallback(() => {}, []);
+
+  const handleCommentDeleted = useCallback(() => {}, []);
+
+  useEffect(() => {
+    // Comments fetch error handler
+    error && console.log(error);
+  }, [error]);
+
+  // Workaround for getting of unused reset variable
+  useEffect(() => {
+    return () => false && reset();
+  }, [reset]);
+
   useEffect(() => {
     onCountChange(count);
   }, [count, onCountChange]);
 
   const handleEndOfScroll = useCallback(() => page < pages && setPage(page + 1), [pages, page]);
   useScrollEndObserver(handleEndOfScroll);
-
-  const handleCommentAdded = useCallback(() => {}, []);
-
-  const handleCommentModified = useCallback(() => {}, []);
-
-  const handleCommentDeleted = useCallback(() => {}, []);
 
   return {
     comments,
