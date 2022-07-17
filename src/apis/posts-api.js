@@ -101,6 +101,16 @@ async function addPostComment(postId, commentData) {
   return response.data;
 }
 
+// Modifies a post's comment
+async function modifyPostComment(postId, commentId, commentData) {
+  const URL = `${ENDPOINT}/${postId}/comments/${commentId}`;
+  const token = localStorage.getItem("access-token");
+  const response = await axios.patch(URL, commentData, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+}
+
 export {
   fetchPaginatedPosts,
   fetchPost,
@@ -110,4 +120,5 @@ export {
   deletePost,
   addPostComment,
   fetchPaginatedComments,
+  modifyPostComment,
 };
