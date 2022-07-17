@@ -36,7 +36,15 @@ export default function useComments(post, onCountChange = emptyFunction) {
     [comments, modifiers]
   );
 
-  const handleCommentModified = useCallback(() => {}, []);
+  const handleCommentModified = useCallback(
+    (modifiedComment) => {
+      const index = comments.findIndex((comment) => comment._id === modifiedComment._id);
+      const _comments = [...comments];
+      _comments[index] = modifiedComment;
+      modifiers.setRows(_comments);
+    },
+    [comments, modifiers]
+  );
 
   const handleCommentDeleted = useCallback(() => {}, []);
 
