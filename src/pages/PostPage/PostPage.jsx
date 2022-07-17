@@ -1,3 +1,4 @@
+import { useCallback, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -19,6 +20,10 @@ import LikesCommentsBar from "./LikesCommentsBar";
 import CommentsSection from "./CommentsSection";
 
 const PostPage = () => {
+  const newCommentInputRef = useRef(null);
+
+  const handleNewCommentClick = useCallback(() => newCommentInputRef.current.focus(), []);
+
   const { postId } = useParams();
 
   const { post, isLoading } = usePost(postId);
@@ -71,8 +76,13 @@ const PostPage = () => {
               <p className="text-secondary">No categories</p>
             )}
           </section>
-          <LikesCommentsBar likesCount={post.likesCount} commentsCount={post.commentsCount} isLiked={!!post.like} />
-          <CommentsSection post={post} />
+          <LikesCommentsBar
+            likesCount={post.likesCount}
+            commentsCount={post.commentsCount}
+            isLiked={!!post.like}
+            onNewCommentClick={handleNewCommentClick}
+          />
+          <CommentsSection newCommentInputRef={newCommentInputRef} post={post} />
         </article>
       )}
     </section>

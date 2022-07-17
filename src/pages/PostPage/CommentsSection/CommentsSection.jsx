@@ -9,7 +9,7 @@ import useNewComment from "./useNewComment";
 // Components
 import CommentsList from "../CommentsList";
 
-const CommentsSection = ({ post }) => {
+const CommentsSection = ({ post, newCommentInputRef }) => {
   const { comments, isLoading, page, handleCommentAdded, handleCommentModified, handleCommentDeleted } =
     useComments(post);
 
@@ -24,6 +24,7 @@ const CommentsSection = ({ post }) => {
         <Form.Group controlId="post-new-comment" className="mb-3">
           <Form.Label>Your comment:</Form.Label>
           <Form.Control
+            ref={newCommentInputRef}
             as="textarea"
             rows="3"
             placeholder="Write your thoughts about this post"

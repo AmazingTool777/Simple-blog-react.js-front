@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // Styles
 import "./LikesCommentBar.css";
 
-const LikesCommentsBar = ({ likesCount, commentsCount, isLiked }) => {
+const LikesCommentsBar = ({ likesCount, commentsCount, isLiked, onNewCommentClick }) => {
   let likeBtnClassName = "lc-button btn";
   if (isLiked) likeBtnClassName += " active";
 
@@ -22,7 +22,7 @@ const LikesCommentsBar = ({ likesCount, commentsCount, isLiked }) => {
         </button>
       </div>
       <div className="d-flex align-items-center">
-        <button className="lc-button btn" title="Comment this post">
+        <button className="lc-button btn" title="Comment this post" onClick={onNewCommentClick}>
           <FontAwesomeIcon icon="comment" />
         </button>
         <button className="btn px-1" title="See comments">
