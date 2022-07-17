@@ -46,7 +46,15 @@ export default function useComments(post, onCountChange = emptyFunction) {
     [comments, modifiers]
   );
 
-  const handleCommentDeleted = useCallback(() => {}, []);
+  const handleCommentDeleted = useCallback(
+    (commentId) => {
+      const index = comments.findIndex((comment) => comment._id === commentId);
+      const _comments = [...comments];
+      _comments.splice(index, 1);
+      modifiers.setRows(_comments);
+    },
+    [comments, modifiers]
+  );
 
   useEffect(() => {
     // Comments fetch error handler
