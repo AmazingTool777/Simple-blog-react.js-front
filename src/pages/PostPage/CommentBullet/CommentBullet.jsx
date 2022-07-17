@@ -25,14 +25,17 @@ const CommentBullet = ({ post, comment, onCommentModified, onCommentDeleted }) =
     [onCommentModified]
   );
 
-  const { content, isSubmitting, handleContentChange, resetModifContent, handleCommentModifSubmit } = useComment(
-    post._id,
-    comment,
-    {
-      onCommentModified: handleCommentModified,
-      onCommentDeleted,
-    }
-  );
+  const {
+    content,
+    isSubmitting,
+    handleContentChange,
+    resetModifContent,
+    handleCommentModifSubmit,
+    handleCommentDelete,
+  } = useComment(post._id, comment, {
+    onCommentModified: handleCommentModified,
+    onCommentDeleted,
+  });
 
   const isUpdated = useCheckIfUpdated();
 
@@ -113,7 +116,7 @@ const CommentBullet = ({ post, comment, onCommentModified, onCommentDeleted }) =
                     Modify
                   </small>
                 </button>
-                <button className="btn btn-sm text-danger" disabled={isSubmitting}>
+                <button className="btn btn-sm text-danger" disabled={isSubmitting} onClick={handleCommentDelete}>
                   <small>
                     <FontAwesomeIcon icon="eraser" className="me-2" />
                     Delete
