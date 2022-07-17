@@ -111,6 +111,16 @@ async function modifyPostComment(postId, commentId, commentData) {
   return response.data;
 }
 
+// Deletes a post's comment
+async function deletePostComment(postId, commentId) {
+  const URL = `${ENDPOINT}/${postId}/comments/${commentId}`;
+  const token = localStorage.getItem("access-token");
+  const response = await axios.delete(URL, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+}
+
 export {
   fetchPaginatedPosts,
   fetchPost,
@@ -121,4 +131,5 @@ export {
   addPostComment,
   fetchPaginatedComments,
   modifyPostComment,
+  deletePostComment,
 };
