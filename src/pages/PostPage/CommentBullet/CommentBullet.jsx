@@ -25,10 +25,14 @@ const CommentBullet = ({ post, comment, onCommentModified, onCommentDeleted }) =
     [onCommentModified]
   );
 
-  const { content, isSubmitting, handleContentChange, resetModifContent } = useComment(post._id, comment, {
-    onCommentModified: handleCommentModified,
-    onCommentDeleted,
-  });
+  const { content, isSubmitting, handleContentChange, resetModifContent, handleCommentModifSubmit } = useComment(
+    post._id,
+    comment,
+    {
+      onCommentModified: handleCommentModified,
+      onCommentDeleted,
+    }
+  );
 
   const isUpdated = useCheckIfUpdated();
 
@@ -75,7 +79,7 @@ const CommentBullet = ({ post, comment, onCommentModified, onCommentDeleted }) =
           </small>
         </div>
         {modifIsOpen ? (
-          <form>
+          <form onSubmit={handleCommentModifSubmit}>
             <textarea
               rows="2"
               placeholder="Modify your comment"
