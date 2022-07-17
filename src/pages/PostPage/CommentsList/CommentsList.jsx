@@ -7,7 +7,7 @@ const CommentsList = ({ comments, page, isLoading, post, count, onCommentModifie
   return isLoading && page === 1 ? (
     <CommentBulletLoaders />
   ) : (
-    <>
+    <div id="comments-list-section">
       {count === 0 && (
         <div className="empty-comments-placeholder d-flex flex-column align-items-center">
           <p className="text-secondary text-center">Be the first to comment</p>
@@ -34,7 +34,7 @@ const CommentsList = ({ comments, page, isLoading, post, count, onCommentModifie
           )}
         </>
       )}
-    </>
+    </div>
   );
 };
 

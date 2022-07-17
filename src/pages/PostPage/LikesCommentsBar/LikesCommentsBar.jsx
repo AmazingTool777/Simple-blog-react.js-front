@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // Styles
@@ -25,11 +26,11 @@ const LikesCommentsBar = ({ likesCount, commentsCount, isLiked, onNewCommentClic
         <button className="lc-button btn" title="Comment this post" onClick={onNewCommentClick}>
           <FontAwesomeIcon icon="comment" />
         </button>
-        <button className="btn px-1" title="See comments">
+        <Link to="#comments-list-section" className="btn px-1 text-dark" title="See comments">
           <small className="lc-info">
             {commentsCount} comment{commentsCount > 1 && "s"}
           </small>
-        </button>
+        </Link>
       </div>
     </section>
   );
