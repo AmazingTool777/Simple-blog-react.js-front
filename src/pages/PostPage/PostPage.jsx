@@ -10,6 +10,7 @@ import { getDateISO, getTimeISO } from "../../utils/dates-utils";
 
 // Custom hooks
 import usePost from "../../hooks/usePost";
+import useCurrentUser from "../../hooks/useCurrentUser";
 
 // Components
 import UserAvatar from "../../components/UserAvatar";
@@ -26,7 +27,9 @@ const PostPage = () => {
 
   const { postId } = useParams();
 
-  const { post, isLoading, handlePostChange } = usePost(postId);
+  const { isLoggedIn } = useCurrentUser();
+
+  const { post, isLoading, handlePostChange } = usePost(postId, isLoggedIn);
   const author = post ? post.author : null;
 
   const authorImgAlt = author ? `${author.firstName} ${author.lastName}'s photo` : "The author";
@@ -77,10 +80,11 @@ const PostPage = () => {
             )}
           </section>
           <LikesCommentsBar
+            post={post}
             likesCount={post.likesCount}
             commentsCount={post.commentsCount}
-            isLiked={!!post.like}
             onNewCommentClick={handleNewCommentClick}
+            onPostChange={handlePostChange}
           />
           <CommentsSection newCommentInputRef={newCommentInputRef} post={post} onPostChange={handlePostChange} />
         </article>

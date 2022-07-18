@@ -23,9 +23,17 @@ async function fetchPaginatedPosts(
 }
 
 // Fetches a post by id
-async function fetchPost(id) {
+async function fetchPost(id, isAuthenticated = false) {
   const URL = `${ENDPOINT}/${id}`;
-  const result = await axios.get(URL);
+  const configs = {};
+  if (isAuthenticated) {
+    const token = localStorage.getItem("access-token");
+    if (token) {
+      const headers = { Authorization: `Bearer ${token}` };
+      configs.headers = headers;
+    }
+  }
+  const result = await axios.get(URL, configs);
   return result.data;
 }
 
