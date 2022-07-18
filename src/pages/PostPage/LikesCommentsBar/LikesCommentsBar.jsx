@@ -4,7 +4,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // Styles
 import "./LikesCommentBar.css";
 
-const LikesCommentsBar = ({ likesCount, commentsCount, isLiked, onNewCommentClick }) => {
+// Custom hooks
+import useLike from "./useLike";
+
+const LikesCommentsBar = ({ post, likesCount, commentsCount, onNewCommentClick, onPostChange }) => {
+  const { isLiked, isSubmitting, handleLikeBtnClick } = useLike(post, { onPostChange });
+
   let likeBtnClassName = "lc-button btn";
   if (isLiked) likeBtnClassName += " active";
 
@@ -13,7 +18,7 @@ const LikesCommentsBar = ({ likesCount, commentsCount, isLiked, onNewCommentClic
   return (
     <section id="likes-comments-bar" className="my-4 d-flex">
       <div className="d-flex align-items-center me-4">
-        <button className={likeBtnClassName} title={likeBtnTitle}>
+        <button className={likeBtnClassName} title={likeBtnTitle} disabled={isSubmitting} onClick={handleLikeBtnClick}>
           <FontAwesomeIcon icon="heart" />
         </button>
         <button className="btn px-1" title="View likes">
