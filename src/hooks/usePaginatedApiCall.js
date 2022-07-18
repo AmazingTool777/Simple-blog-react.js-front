@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useMemo, useCallback } from "react";
+import { useReducer, useEffect, useCallback } from "react";
 import _ from "lodash";
 
 const initialState = {
@@ -14,7 +14,7 @@ const ACTIONS = {
   DATA_FETCHED: "DATA_FETCHED",
   FETCH_ERROR: "FETCH_ERROR",
   RESET: "RESET",
-  ROWS_SET: "ROWS_SET",
+  STATE_SET: "STATE_SET",
 };
 
 function reducer(state, action) {
@@ -26,7 +26,7 @@ function reducer(state, action) {
       const { paginatedResults, merge, key, isInitial } = action.payload;
       return {
         isLoading: false,
-        rows: !merge || isInitial ? paginatedResults.rows : _.unionBy(paginatedResults.rows, state.rows, key),
+        rows: !merge || isInitial ? paginatedResults.rows : _.unionBy(state.rows, paginatedResults.rows, key),
         count: paginatedResults.count,
         pages: paginatedResults.pages,
         error: null,
@@ -39,8 +39,8 @@ function reducer(state, action) {
     case ACTIONS.RESET:
       return { isLoading: false, rows: [], count: 0, pages: 1, error: null };
 
-    case ACTIONS.ROWS_SET:
-      return { ...state, rows: action.payload.rows };
+    case ACTIONS.STATE_SET:
+      return { ...state, ...action.payload };
 
     default:
       new Error("Unknown dispatch action");
@@ -71,21 +71,17 @@ function usePaginatedApiCall(apiCall, options, dependencies) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [...dependencies]);
 
-  // Modifies the rows
-  const setRows = useCallback(
-    (rows) =>
+  // Modifies the state
+  const setState = useCallback(
+    (state) =>
       dispatch({
-        type: ACTIONS.ROWS_SET,
-        payload: { rows },
+        type: ACTIONS.STATE_SET,
+        payload: state,
       }),
     []
   );
 
-  const modifiers = useMemo(() => {
-    return { setRows };
-  }, [setRows]);
-
-  return [rows, isLoading, count, pages, error, reset, modifiers];
+  return [rows, isLoading, count, pages, error, reset, setState];
 }
 
 export default usePaginatedApiCall;
