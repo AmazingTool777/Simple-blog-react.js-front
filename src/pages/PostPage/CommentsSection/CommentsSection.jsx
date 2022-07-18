@@ -9,9 +9,9 @@ import useNewComment from "./useNewComment";
 // Components
 import CommentsList from "../CommentsList";
 
-const CommentsSection = ({ post, newCommentInputRef }) => {
-  const { comments, isLoading, page, handleCommentAdded, handleCommentModified, handleCommentDeleted } =
-    useComments(post);
+const CommentsSection = ({ post, newCommentInputRef, onPostChange }) => {
+  const { comments, isLoading, hasFetched, page, handleCommentAdded, handleCommentModified, handleCommentDeleted } =
+    useComments(post, onPostChange);
 
   const { content, isSubmitting, handleContentChange, handleContentFocus, handleCommentSubmit } = useNewComment(
     post,
@@ -43,6 +43,7 @@ const CommentsSection = ({ post, newCommentInputRef }) => {
         comments={comments}
         page={page}
         isLoading={isLoading}
+        hasFetched={hasFetched}
         post={post}
         count={post.commentsCount}
         onCommentModified={handleCommentModified}

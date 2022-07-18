@@ -3,8 +3,8 @@ import Spinner from "react-bootstrap/Spinner";
 // Components
 import CommentBullet, { CommentBulletLoaders } from "../CommentBullet";
 
-const CommentsList = ({ comments, page, isLoading, post, count, onCommentModified, onCommentDeleted }) => {
-  return isLoading && page === 1 ? (
+const CommentsList = ({ comments, page, isLoading, hasFetched, post, count, onCommentModified, onCommentDeleted }) => {
+  return isLoading && page === 1 && !hasFetched ? (
     <CommentBulletLoaders />
   ) : (
     <div id="comments-list-section">
