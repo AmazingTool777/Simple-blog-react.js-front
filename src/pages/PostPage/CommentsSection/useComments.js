@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 // API calls
 import { fetchPaginatedComments } from "../../../apis/posts-api";
@@ -10,20 +10,35 @@ import useScrollEndObserver from "../../../hooks/useScrollEndObserver";
 const emptyFunction = () => {};
 
 // Custom hook for handling the list of comments
-export default function useComments(post, onCountChange = emptyFunction) {
-  const [page, setPage] = useState(1);
+export default function useComments(post, onPostChange = emptyFunction) {
+  const countPerLastPageRef = useRef(0);
 
-  const [comments, isLoading, count, pages, error, reset, modifiers] = usePaginatedApiCall(
+  const [page, setPage] = useState(1);
+  const [hasFetched, setHasFetched] = useState(false);
+
+  const LIMIT = 10;
+  const [comments, isLoading, count, pages, error, reset, setCommentsState] = usePaginatedApiCall(
     () => {
-      const LIMIT = 10;
+      !hasFetched && setHasFetched(true);
       return fetchPaginatedComments(post._id, page, LIMIT);
     },
     {
       merge: true,
       key: "_id",
-      isInitial: page === 1,
+      isInitial: page === 1 && !hasFetched,
     },
     [page]
+  );
+
+  const handlePageChangeAfterOperation = useCallback(
+    (isAdditive) => {
+      const operationQuantity = isAdditive ? 1 : -1;
+      countPerLastPageRef.current += operationQuantity;
+      const { current: countPerLastPage } = countPerLastPageRef;
+      if (isAdditive && countPerLastPage > LIMIT && count > 0) setPage(page + 1);
+      else if (!isAdditive && page > 1 && countPerLastPage <= 0) setPage(page - 1);
+    },
+    [page, count]
   );
 
   const handleCommentAdded = useCallback(
@@ -31,9 +46,10 @@ export default function useComments(post, onCountChange = emptyFunction) {
       const _comments = [...comments];
       _comments.unshift(addedComment);
       _comments.sort((c1, c2) => new Date(c2.createdAt).getTime() - new Date(c1.createdAt).getTime());
-      modifiers.setRows(_comments);
+      handlePageChangeAfterOperation(true);
+      setCommentsState({ rows: _comments, count: count + 1 });
     },
-    [comments, modifiers]
+    [comments, count, handlePageChangeAfterOperation, setCommentsState]
   );
 
   const handleCommentModified = useCallback(
@@ -41,9 +57,9 @@ export default function useComments(post, onCountChange = emptyFunction) {
       const index = comments.findIndex((comment) => comment._id === modifiedComment._id);
       const _comments = [...comments];
       _comments[index] = modifiedComment;
-      modifiers.setRows(_comments);
+      setCommentsState({ rows: _comments });
     },
-    [comments, modifiers]
+    [comments, setCommentsState]
   );
 
   const handleCommentDeleted = useCallback(
@@ -51,9 +67,21 @@ export default function useComments(post, onCountChange = emptyFunction) {
       const index = comments.findIndex((comment) => comment._id === commentId);
       const _comments = [...comments];
       _comments.splice(index, 1);
-      modifiers.setRows(_comments);
+      handlePageChangeAfterOperation(false);
+      setCommentsState({ rows: _comments, count: count - 1 });
     },
-    [comments, modifiers]
+    [comments, count, handlePageChangeAfterOperation, setCommentsState]
+  );
+
+  const onCountChange = useCallback(
+    (count) => {
+      onPostChange({
+        ...post,
+        commentsCount: count,
+      });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [onPostChange]
   );
 
   useEffect(() => {
@@ -68,6 +96,9 @@ export default function useComments(post, onCountChange = emptyFunction) {
 
   useEffect(() => {
     onCountChange(count);
+    const remainder = count % LIMIT;
+    countPerLastPageRef.current = remainder === 0 ? LIMIT : remainder;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [count, onCountChange]);
 
   const handleEndOfScroll = useCallback(() => page < pages && setPage(page + 1), [pages, page]);
@@ -79,6 +110,7 @@ export default function useComments(post, onCountChange = emptyFunction) {
     isLoading,
     count,
     pages,
+    hasFetched,
     handleCommentAdded,
     handleCommentModified,
     handleCommentDeleted,
