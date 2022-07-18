@@ -26,7 +26,7 @@ const PostPage = () => {
 
   const { postId } = useParams();
 
-  const { post, isLoading } = usePost(postId);
+  const { post, isLoading, handlePostChange } = usePost(postId);
   const author = post ? post.author : null;
 
   const authorImgAlt = author ? `${author.firstName} ${author.lastName}'s photo` : "The author";
@@ -82,7 +82,7 @@ const PostPage = () => {
             isLiked={!!post.like}
             onNewCommentClick={handleNewCommentClick}
           />
-          <CommentsSection newCommentInputRef={newCommentInputRef} post={post} />
+          <CommentsSection newCommentInputRef={newCommentInputRef} post={post} onPostChange={handlePostChange} />
         </article>
       )}
     </section>
