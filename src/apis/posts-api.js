@@ -129,6 +129,22 @@ async function deletePostComment(postId, commentId) {
   return response.data;
 }
 
+// Adds a like to a post
+async function addPostLike(postId) {
+  const token = localStorage.getItem("access-token");
+  const URL = `${ENDPOINT}/${postId}/likes`;
+  const headers = { Authorization: `Bearer ${token}` };
+  return (await axios.post(URL, null, { headers })).data;
+}
+
+// Removes a like from a post
+async function removeLikeFromPost(postId, likeId) {
+  const token = localStorage.getItem("access-token");
+  const URL = `${ENDPOINT}/${postId}/likes/${likeId}`;
+  const headers = { Authorization: `Bearer ${token}` };
+  await axios.delete(URL, { headers });
+}
+
 export {
   fetchPaginatedPosts,
   fetchPost,
@@ -140,4 +156,6 @@ export {
   fetchPaginatedComments,
   modifyPostComment,
   deletePostComment,
+  addPostLike,
+  removeLikeFromPost,
 };
