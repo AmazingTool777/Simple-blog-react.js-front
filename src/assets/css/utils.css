@@ -1,0 +1,14 @@
+.fw-semibold {
+  font-weight: 600;
+}
+
+.username-link {
+  transition: 0.3s;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--bs-dark);
+}
+.username-link:hover {
+  color: var(--bs-primary);
+}

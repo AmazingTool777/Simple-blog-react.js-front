@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./assets/css/utils.css";
 
 // Contexts
 import currentUserContext from "./contexts/currentUser-context";
