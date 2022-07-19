@@ -1,3 +1,4 @@
+import { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -7,7 +8,15 @@ import "./LikesCommentBar.css";
 // Custom hooks
 import useLike from "./useLike";
 
+// Components
+import LikesListModal from "../LikesListModal";
+
 const LikesCommentsBar = ({ post, likesCount, commentsCount, onNewCommentClick, onPostChange }) => {
+  const [likesModalIsOpen, setLikesModalOpen] = useState(false);
+
+  const handleLikesModalOpen = useCallback(() => setLikesModalOpen(true), []);
+  const handleLikesModalClose = useCallback(() => setLikesModalOpen(false), []);
+
   const { isLiked, isSubmitting, handleLikeBtnClick } = useLike(post, { onPostChange });
 
   let likeBtnClassName = "lc-button btn";
@@ -21,7 +30,7 @@ const LikesCommentsBar = ({ post, likesCount, commentsCount, onNewCommentClick, 
         <button className={likeBtnClassName} title={likeBtnTitle} disabled={isSubmitting} onClick={handleLikeBtnClick}>
           <FontAwesomeIcon icon="heart" />
         </button>
-        <button className="btn px-1" title="View likes">
+        <button className="btn px-1" title="View likes" onClick={handleLikesModalOpen}>
           <small className="lc-info">
             {likesCount} like{likesCount > 1 && "s"}
           </small>
@@ -37,6 +46,7 @@ const LikesCommentsBar = ({ post, likesCount, commentsCount, onNewCommentClick, 
           </small>
         </Link>
       </div>
+      <LikesListModal show={likesModalIsOpen} post={post} onHide={handleLikesModalClose} />
     </section>
   );
 };
