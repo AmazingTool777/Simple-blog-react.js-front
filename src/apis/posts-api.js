@@ -129,6 +129,12 @@ async function deletePostComment(postId, commentId) {
   return response.data;
 }
 
+// Gets paginated likes of a post
+async function fetchPaginatedPostLikes(postId, page = 1, limit = 10, order = "desc") {
+  const URL = `${ENDPOINT}/${postId}/likes`;
+  return (await axios.get(URL, { params: { page, limit, order } })).data;
+}
+
 // Adds a like to a post
 async function addPostLike(postId) {
   const token = localStorage.getItem("access-token");
@@ -158,4 +164,5 @@ export {
   deletePostComment,
   addPostLike,
   removeLikeFromPost,
+  fetchPaginatedPostLikes,
 };
