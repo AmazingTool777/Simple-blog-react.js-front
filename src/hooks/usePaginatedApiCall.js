@@ -56,18 +56,20 @@ function usePaginatedApiCall(apiCall, options, dependencies) {
   const reset = () => dispatch({ type: ACTIONS.RESET });
 
   useEffect(() => {
-    dispatch({ type: ACTIONS.DATA_LOADING });
-    apiCall()
-      .then((paginatedResults) => {
-        const _options = options ? options : { merge: false, key: null, isInitial: true };
-        dispatch({
-          type: ACTIONS.DATA_FETCHED,
-          payload: { paginatedResults, merge: _options.merge, key: _options.key, isInitial: _options.isInitial },
+    if (!options || (options && !options.blocked)) {
+      dispatch({ type: ACTIONS.DATA_LOADING });
+      apiCall()
+        .then((paginatedResults) => {
+          const _options = options ? options : { merge: false, key: null, isInitial: true };
+          dispatch({
+            type: ACTIONS.DATA_FETCHED,
+            payload: { paginatedResults, merge: _options.merge, key: _options.key, isInitial: _options.isInitial },
+          });
+        })
+        .catch((error) => {
+          dispatch({ type: ACTIONS.FETCH_ERROR, payload: error });
         });
-      })
-      .catch((error) => {
-        dispatch({ type: ACTIONS.FETCH_ERROR, payload: error });
-      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [...dependencies]);
 
