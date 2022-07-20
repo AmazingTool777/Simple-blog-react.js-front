@@ -12,10 +12,17 @@ import useLike from "./useLike";
 import LikesListModal from "../LikesListModal";
 
 const LikesCommentsBar = ({ post, likesCount, commentsCount, onNewCommentClick, onPostChange }) => {
+  // Whether the modal component should render on the DOM or not
   const [likesModalIsOpen, setLikesModalOpen] = useState(false);
+  // Whether the modal should show or hide
+  const [showLikesModal, setShowLikesModal] = useState(false);
 
-  const handleLikesModalOpen = useCallback(() => setLikesModalOpen(true), []);
+  const handleLikesModalOpen = useCallback(() => {
+    setShowLikesModal(true);
+    setLikesModalOpen(true);
+  }, []);
   const handleLikesModalClose = useCallback(() => setLikesModalOpen(false), []);
+  const handleLikesModalHide = useCallback(() => setShowLikesModal(false), []);
 
   const { isLiked, isSubmitting, handleLikeBtnClick } = useLike(post, { onPostChange });
 
@@ -46,7 +53,14 @@ const LikesCommentsBar = ({ post, likesCount, commentsCount, onNewCommentClick, 
           </small>
         </Link>
       </div>
-      <LikesListModal show={likesModalIsOpen} post={post} onHide={handleLikesModalClose} />
+      {likesModalIsOpen && (
+        <LikesListModal
+          show={showLikesModal}
+          post={post}
+          onHide={handleLikesModalHide}
+          onClose={handleLikesModalClose}
+        />
+      )}
     </section>
   );
 };

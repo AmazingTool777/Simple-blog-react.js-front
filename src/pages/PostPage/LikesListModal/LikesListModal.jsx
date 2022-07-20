@@ -9,7 +9,7 @@ import { useContainedScrollEndObserver } from "../../../hooks/useScrollEndObserv
 // Components
 import LikeItem from "../LikeItem";
 
-const LikesListModal = ({ show, post, onHide }) => {
+const LikesListModal = ({ show, post, onHide, onClose }) => {
   const bodyRef = useRef();
   const listRef = useRef();
 
@@ -33,7 +33,7 @@ const LikesListModal = ({ show, post, onHide }) => {
   const shouldRenderLoaders = isLoading && page === 1 && !hasFetched;
 
   return (
-    <Modal backdrop="static" scrollable show={show} onHide={handleModalHide}>
+    <Modal backdrop="static" scrollable show={show} onHide={handleModalHide} onExited={onClose}>
       <Modal.Header closeButton>
         <Modal.Title>People who liked this post</Modal.Title>
       </Modal.Header>
