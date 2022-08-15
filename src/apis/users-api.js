@@ -37,7 +37,10 @@ async function fetchUsers(page = 1, limit = 12, order = "DESC", search = "") {
 // Gets a user
 async function fetchUser(id) {
   const URL = `${ENDPOINT}/${id}`;
-  return (await axios.get(URL)).data;
+  const headers = {};
+  const token = localStorage.getItem("access-token");
+  if (token) headers.Authorization = `Bearer ${token}`;
+  return (await axios.get(URL, { headers })).data;
 }
 
 // Updates a user's profile phto
@@ -68,6 +71,31 @@ async function deleteUserAccount(userId, passwordData) {
   await axios.delete(URL, { headers: { Authorization: `Bearer ${token}` }, data: passwordData });
 }
 
+// Adds a user to another user's followings
+async function addFollowing(followedUserId) {
+  const URL = `${ENDPOINT}/${followedUserId}/followings`;
+  const token = localStorage.getItem("access-token");
+  const following = (
+    await axios.post(URL, null, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+  ).data;
+  return following;
+}
+
+// Adds a user to another user's followings
+async function removeFollowing(followingId, followedUserId) {
+  const URL = `${ENDPOINT}/${followedUserId}/followings/${followingId}`;
+  const token = localStorage.getItem("access-token");
+  await axios.delete(URL, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
 export {
   signupUser,
   authenticateUserFromToken,
@@ -78,4 +106,6 @@ export {
   updateUserPersoInfo,
   updateUserPassword,
   deleteUserAccount,
+  addFollowing,
+  removeFollowing,
 };
