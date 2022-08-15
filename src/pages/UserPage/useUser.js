@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -13,6 +13,13 @@ export default function useUser() {
   const [user, setUser] = useState(null);
   const [isLoading, setLoading] = useState(false);
   const [hasFetched, setHasFetched] = useState(false);
+
+  const handleUserChange = useCallback(
+    (userData) => {
+      if (user) setUser({ ...user, ...userData });
+    },
+    [user]
+  );
 
   const { userId } = useParams();
 
@@ -52,5 +59,5 @@ export default function useUser() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
-  return { user, isLoading, hasFetched };
+  return { user, isLoading, hasFetched, handleUserChange };
 }

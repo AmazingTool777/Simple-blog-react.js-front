@@ -19,7 +19,7 @@ import UserPageLoaders from "./UserPageLoaders";
 import FollowingButton from "./FollowingButton";
 
 const UserPage = () => {
-  const { user, isLoading, hasFetched } = useUser();
+  const { user, isLoading, hasFetched, handleUserChange } = useUser();
 
   const fullName = user ? `${user.firstName} ${user.lastName}` : null;
   const alt = `${fullName}'s profile photo`;
@@ -56,7 +56,7 @@ const UserPage = () => {
                     </p>
                   </div>
                 </div>
-                <FollowingButton user={user} />
+                <FollowingButton user={user} onUserChange={handleUserChange} />
               </div>
             </article>
           )}
