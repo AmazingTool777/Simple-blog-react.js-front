@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 // API calls
 import { fetchPaginatedComments } from "../../../apis/posts-api";
@@ -6,13 +6,12 @@ import { fetchPaginatedComments } from "../../../apis/posts-api";
 // Other custom hooks
 import usePaginatedApiCall from "../../../hooks/usePaginatedApiCall";
 import useScrollEndObserver from "../../../hooks/useScrollEndObserver";
+import useReactivePagination from "../../../hooks/useReactivePagination";
 
 const emptyFunction = () => {};
 
 // Custom hook for handling the list of comments
 export default function useComments(post, onPostChange = emptyFunction) {
-  const countPerLastPageRef = useRef(0);
-
   const [page, setPage] = useState(1);
   const [hasFetched, setHasFetched] = useState(false);
 
@@ -30,16 +29,7 @@ export default function useComments(post, onPostChange = emptyFunction) {
     [page]
   );
 
-  const handlePageChangeAfterOperation = useCallback(
-    (isAdditive) => {
-      const operationQuantity = isAdditive ? 1 : -1;
-      countPerLastPageRef.current += operationQuantity;
-      const { current: countPerLastPage } = countPerLastPageRef;
-      if (isAdditive && countPerLastPage > LIMIT && count > 0) setPage(page + 1);
-      else if (!isAdditive && page > 1 && countPerLastPage <= 0) setPage(page - 1);
-    },
-    [page, count]
-  );
+  const { handlePageChangeAfterOperation } = useReactivePagination(page, LIMIT, count, setPage);
 
   const handleCommentAdded = useCallback(
     (addedComment) => {
@@ -96,8 +86,6 @@ export default function useComments(post, onPostChange = emptyFunction) {
 
   useEffect(() => {
     onCountChange(count);
-    const remainder = count % LIMIT;
-    countPerLastPageRef.current = remainder === 0 ? LIMIT : remainder;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [count, onCountChange]);
 
