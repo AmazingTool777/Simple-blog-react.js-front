@@ -54,6 +54,7 @@ export default function useLike(post, callbacks = defaultCallbacks) {
 
   // Whether the post is liked or not by the current user
   const isLiked = useMemo(() => {
+    if (!currentUser) return false;
     return !!post.like && post.like.user === currentUser._id;
   }, [currentUser, post.like]);
 
