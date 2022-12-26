@@ -31,6 +31,13 @@ const UserPage = () => {
 
   const isCurrentUser = !!user && currentUser?._id === user._id;
 
+  function handleFollowingChange({ following }) {
+    handleUserChange({
+      following,
+      followersCount: following ? user.followersCount + 1 : user.followersCount - 1,
+    });
+  }
+
   return (
     <section id="user-page">
       <AppBreadcrumbNav
@@ -78,7 +85,7 @@ const UserPage = () => {
                     Edit profile
                   </Button>
                 ) : (
-                  <FollowingButton user={user} onUserChange={handleUserChange} />
+                  <FollowingButton user={user} onUserChange={handleFollowingChange} />
                 )}
               </div>
             </article>
