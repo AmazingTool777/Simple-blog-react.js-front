@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import io from "socket.io-client";
 
 // Server config
@@ -43,6 +43,13 @@ export default function SocketProvider({ children }) {
     }),
     [socket]
   );
+
+  // Clearing the socket connection listener
+  useEffect(() => {
+    if (socket) {
+      return () => socket.off("connect");
+    }
+  }, [socket]);
 
   return <socketContext.Provider value={contextValue}>{children}</socketContext.Provider>;
 }
