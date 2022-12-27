@@ -13,10 +13,11 @@ export default function NotificationsHandler({ children }) {
   useEffect(() => {
     if (socket) {
       socket.on("new_follower", handleNewFollowerNotification);
+      socket.on("post_like", handlePostLiked);
 
       // Unsubscription of socket events on cleanup
       return () => {
-        const events = ["new_follower"];
+        const events = ["new_follower", "post_like"];
         events.forEach((e) => socket.off(e));
       };
     }
@@ -25,6 +26,10 @@ export default function NotificationsHandler({ children }) {
 
   function handleNewFollowerNotification(notification) {
     addNotification("New follower", notification);
+  }
+
+  function handlePostLiked(notification) {
+    addNotification("Post liked", notification);
   }
 
   const addNotification = useCallback(
