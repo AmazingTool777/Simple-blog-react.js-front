@@ -91,6 +91,18 @@ export default function useComments(post, onPostChange = emptyFunction) {
     [handleCommentAdded]
   );
 
+  // Comment modified socket event handler
+  const handleSocketCommentModified = useCallback(
+    (data) => {
+      handleCommentModified({
+        ...data.comment,
+        user: data.user,
+        post: data.post,
+      });
+    },
+    [handleCommentModified]
+  );
+
   useEffect(() => {
     // Comments fetch error handler
     error && console.log(error);
@@ -109,13 +121,14 @@ export default function useComments(post, onPostChange = emptyFunction) {
   useEffect(() => {
     if (socket) {
       socket.on("comment_added", handleNewComment);
+      socket.on("comment_modified", handleSocketCommentModified);
 
       return () => {
-        const events = ["comment_added"];
+        const events = ["comment_added", "comment_modified"];
         events.forEach((e) => socket.off(e));
       };
     }
-  }, [socket, handleNewComment]);
+  }, [socket, handleNewComment, handleSocketCommentModified]);
 
   const handleEndOfScroll = useCallback(() => page < pages && setPage(page + 1), [pages, page]);
   useScrollEndObserver(handleEndOfScroll);
