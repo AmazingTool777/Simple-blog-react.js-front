@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -7,6 +7,9 @@ import "./PostPage.css";
 
 // Utils
 import { getDateISO, getTimeISO } from "../../utils/dates-utils";
+
+// Contexts
+import { useSocket } from "../../contexts/socket";
 
 // Custom hooks
 import usePost from "../../hooks/usePost";
@@ -27,10 +30,20 @@ const PostPage = () => {
 
   const { postId } = useParams();
 
+  const { socket } = useSocket();
+
   const { isLoggedIn } = useCurrentUser();
 
   const { post, isLoading, handlePostChange } = usePost(postId, isLoggedIn);
   const author = post ? post.author : null;
+
+  // Setup of the post view and post left events system
+  useEffect(() => {
+    socket.emit("post_view", postId);
+    return () => {
+      socket.emit("post_leave", postId);
+    };
+  }, [socket, postId]);
 
   const authorImgAlt = author ? `${author.firstName} ${author.lastName}'s photo` : "The author";
 
