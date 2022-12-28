@@ -103,6 +103,14 @@ export default function useComments(post, onPostChange = emptyFunction) {
     [handleCommentModified]
   );
 
+  // Comment Deleted socket event handler
+  const handleSocketCommentDeleted = useCallback(
+    (data) => {
+      handleCommentDeleted(data.commentId);
+    },
+    [handleCommentDeleted]
+  );
+
   useEffect(() => {
     // Comments fetch error handler
     error && console.log(error);
@@ -122,13 +130,14 @@ export default function useComments(post, onPostChange = emptyFunction) {
     if (socket) {
       socket.on("comment_added", handleNewComment);
       socket.on("comment_modified", handleSocketCommentModified);
+      socket.on("comment_deleted", handleSocketCommentDeleted);
 
       return () => {
-        const events = ["comment_added", "comment_modified"];
+        const events = ["comment_added", "comment_modified", "comment_deleted"];
         events.forEach((e) => socket.off(e));
       };
     }
-  }, [socket, handleNewComment, handleSocketCommentModified]);
+  }, [socket, handleNewComment, handleSocketCommentModified, handleSocketCommentDeleted]);
 
   const handleEndOfScroll = useCallback(() => page < pages && setPage(page + 1), [pages, page]);
   useScrollEndObserver(handleEndOfScroll);
