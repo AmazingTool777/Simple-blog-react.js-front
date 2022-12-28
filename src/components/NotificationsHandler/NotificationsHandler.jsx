@@ -13,11 +13,12 @@ export default function NotificationsHandler({ children }) {
   useEffect(() => {
     if (socket) {
       socket.on("new_follower", handleNewFollowerNotification);
-      socket.on("post_like", handlePostLiked);
+      socket.on("post_like", handlePostLikedNotification);
+      socket.on("new_post", handleNewPostNotification);
 
       // Unsubscription of socket events on cleanup
       return () => {
-        const events = ["new_follower", "post_like"];
+        const events = ["new_follower", "post_like", "new_post"];
         events.forEach((e) => socket.off(e));
       };
     }
@@ -28,8 +29,12 @@ export default function NotificationsHandler({ children }) {
     addNotification("New follower", notification);
   }
 
-  function handlePostLiked(notification) {
+  function handlePostLikedNotification(notification) {
     addNotification("Post liked", notification);
+  }
+
+  function handleNewPostNotification(notification) {
+    addNotification("New post", notification);
   }
 
   const addNotification = useCallback(
