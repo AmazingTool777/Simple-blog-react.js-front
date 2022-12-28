@@ -15,6 +15,7 @@ export default function NotificationsHandler({ children }) {
       socket.on("new_follower", handleNewFollowerNotification);
       socket.on("post_like", handlePostLikedNotification);
       socket.on("new_post", handleNewPostNotification);
+      socket.on("post_comment", handlePostCommentNotification);
 
       // Unsubscription of socket events on cleanup
       return () => {
@@ -35,6 +36,10 @@ export default function NotificationsHandler({ children }) {
 
   function handleNewPostNotification(notification) {
     addNotification("New post", notification);
+  }
+
+  function handlePostCommentNotification(notification) {
+    addNotification("Post commented", notification);
   }
 
   const addNotification = useCallback(
