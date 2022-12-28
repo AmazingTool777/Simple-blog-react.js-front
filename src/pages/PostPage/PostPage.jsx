@@ -39,10 +39,12 @@ const PostPage = () => {
 
   // Setup of the post view and post left events system
   useEffect(() => {
-    socket.emit("post_view", postId);
-    return () => {
-      socket.emit("post_leave", postId);
-    };
+    if (socket) {
+      socket.emit("post_view", postId);
+      return () => {
+        socket.emit("post_leave", postId);
+      };
+    }
   }, [socket, postId]);
 
   const authorImgAlt = author ? `${author.firstName} ${author.lastName}'s photo` : "The author";
