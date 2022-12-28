@@ -10,6 +10,7 @@ import { fetchPaginatedComments } from "../../../apis/posts-api";
 import usePaginatedApiCall from "../../../hooks/usePaginatedApiCall";
 import useScrollEndObserver from "../../../hooks/useScrollEndObserver";
 import useReactivePagination from "../../../hooks/useReactivePagination";
+import useDebounce from "../../../hooks/useDebounce";
 
 const emptyFunction = () => {};
 
@@ -19,6 +20,9 @@ export default function useComments(post, onPostChange = emptyFunction) {
 
   const [page, setPage] = useState(1);
   const [hasFetched, setHasFetched] = useState(false);
+
+  const [someoneIsCommenting, setSomeoneIsCommenting] = useState(false);
+  const [commentingsCount, setCommentingsCount] = useState(0);
 
   const LIMIT = 10;
   const [comments, isLoading, count, pages, error, reset, setCommentsState] = usePaginatedApiCall(
@@ -67,6 +71,11 @@ export default function useComments(post, onPostChange = emptyFunction) {
     },
     [comments, count, handlePageChangeAfterOperation, setCommentsState]
   );
+
+  const handleSomeoneIsCommenting = useCallback(() => {
+    setSomeoneIsCommenting(true);
+    setCommentingsCount((count) => count + 1);
+  }, []);
 
   const onCountChange = useCallback(
     (count) => {
@@ -131,13 +140,22 @@ export default function useComments(post, onPostChange = emptyFunction) {
       socket.on("comment_added", handleNewComment);
       socket.on("comment_modified", handleSocketCommentModified);
       socket.on("comment_deleted", handleSocketCommentDeleted);
+      socket.on("user_commenting", handleSomeoneIsCommenting);
 
       return () => {
-        const events = ["comment_added", "comment_modified", "comment_deleted"];
+        const events = ["comment_added", "comment_modified", "comment_deleted", "user_commenting"];
         events.forEach((e) => socket.off(e));
       };
     }
-  }, [socket, handleNewComment, handleSocketCommentModified, handleSocketCommentDeleted]);
+  }, [socket, handleNewComment, handleSocketCommentModified, handleSocketCommentDeleted, handleSomeoneIsCommenting]);
+
+  useDebounce(
+    () => {
+      setSomeoneIsCommenting(false);
+    },
+    1000,
+    [commentingsCount]
+  );
 
   const handleEndOfScroll = useCallback(() => page < pages && setPage(page + 1), [pages, page]);
   useScrollEndObserver(handleEndOfScroll);
@@ -149,6 +167,7 @@ export default function useComments(post, onPostChange = emptyFunction) {
     count,
     pages,
     hasFetched,
+    someoneIsCommenting,
     handleCommentAdded,
     handleCommentModified,
     handleCommentDeleted,
