@@ -1,6 +1,9 @@
 import { useState, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
+// Contexts
+import { useSocket } from "../../../contexts/socket";
+
 // API calls
 import { addPostComment } from "../../../apis/posts-api";
 
@@ -9,6 +12,8 @@ import useCurrentUser from "../../../hooks/useCurrentUser";
 
 // Custom hook for the addition of a new comment
 export default function useNewComment(post, onCommentAdded = () => {}) {
+  const { socket } = useSocket();
+
   const [content, setContent] = useState("");
   const [isSubmitting, setSubmitting] = useState(false);
 
@@ -17,7 +22,14 @@ export default function useNewComment(post, onCommentAdded = () => {}) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const handleContentChange = useCallback((e) => setContent(e.target.value), []);
+  const handleContentChange = useCallback(
+    (e) => {
+      if (socket) socket.emit("user_commenting", post._id);
+      setContent(e.target.value);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [socket]
+  );
 
   const handleContentFocus = useCallback(() => {
     // Redirecting the current user to authenticate if not logged in

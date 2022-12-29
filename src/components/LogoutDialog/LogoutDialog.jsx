@@ -2,17 +2,25 @@ import { useCallback } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
+// Contexts
+import { useSocket } from "../../contexts/socket";
+
 // Custom hooks
 import { useSignupDialog } from "../../contexts/signoutDialog";
 import useCurrentUser from "../../hooks/useCurrentUser";
 
 const LogoutDialog = () => {
+  const { connectSocket } = useSocket();
+
   const { logout } = useCurrentUser();
 
   const { signoutDialogShow, handleSignoutModalShow } = useSignupDialog();
 
   const handleSignout = useCallback(() => {
     logout(() => handleSignoutModalShow(false));
+    // Reconnecting with a new websocket connection
+    connectSocket();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [handleSignoutModalShow, logout]);
 
   return (

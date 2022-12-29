@@ -4,6 +4,9 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+// Contexts
+import { useSocket } from "../../contexts/socket";
+
 // API calls
 import { loginUser } from "../../apis/users-api";
 
@@ -25,6 +28,8 @@ const validationSchema = Yup.object({
 
 // Custom hook the sign in page
 function useLogin() {
+  const { connectSocket } = useSocket();
+
   const { setCurrentUser } = useCurrentUser();
 
   const navigate = useNavigate();
@@ -43,6 +48,8 @@ function useLogin() {
         const loggedUser = await loginUser(values);
         // Setting the current logged in user
         setCurrentUser(loggedUser);
+        // Reconnecting with a new websocket connection
+        connectSocket();
         // Triggering the corresponding toast
         handleToastAdd({
           type: "BROWSING_MESSAGE",
@@ -75,6 +82,7 @@ function useLogin() {
           });
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [navigate, setCurrentUser, from, handleToastAdd]
   );
 

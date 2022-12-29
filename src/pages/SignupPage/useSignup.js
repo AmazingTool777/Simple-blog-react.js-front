@@ -4,6 +4,9 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+// Contexts
+import { useSocket } from "../../contexts/socket";
+
 // API calls
 import { signupUser } from "../../apis/users-api";
 
@@ -35,6 +38,8 @@ const validationSchema = Yup.object({
 
 // Custom hook for the signup page
 function useSignup() {
+  const { connectSocket } = useSocket();
+
   const [step, setStep] = useState(1);
   const [isApiSubmitting, setApiSubmitting] = useState(false);
 
@@ -53,6 +58,8 @@ function useSignup() {
         const signedUpUser = await signupUser(values);
         // Setting the newly signed up user as the current logged in user
         setCurrentUser(signedUpUser);
+        // Reconnecting with a new websocket connection
+        connectSocket();
         // Triggering a toast
         handleToastAdd({
           type: "OPERATION_MESSAGE",
@@ -93,6 +100,7 @@ function useSignup() {
         });
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [setCurrentUser, navigate, handleToastAdd]
   );
 

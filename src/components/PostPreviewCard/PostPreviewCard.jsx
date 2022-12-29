@@ -6,8 +6,15 @@ import { getDateISO, getTimeISO } from "../../utils/dates-utils";
 // Styles
 import "./PostsPreviewCard.css";
 
+// Contexts
+import useCurrentUser from "../../hooks/useCurrentUser";
+
 const PostsPreviewCard = ({ post, linkTo }) => {
   const navigate = useNavigate();
+
+  const { currentUser } = useCurrentUser();
+
+  const belongsToCurrentUser = currentUser?._id === post.author._id;
 
   return (
     <article>
@@ -24,6 +31,7 @@ const PostsPreviewCard = ({ post, linkTo }) => {
               onClick={(e) => e.stopPropagation()}
             >
               {post.author.firstName} {post.author.lastName}
+              {belongsToCurrentUser && " (you)"}
             </Link>
           </Card.Text>
           <Card.Text className="fs-6 text-secondary">

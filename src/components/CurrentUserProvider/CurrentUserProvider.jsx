@@ -1,4 +1,7 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
+
+// Other contexts
+import { useSocket } from "../../contexts/socket";
 
 // The current user context
 import currentUserContext from "../../contexts/currentUser-context";
@@ -7,6 +10,10 @@ import currentUserContext from "../../contexts/currentUser-context";
 import { authenticateUserFromToken } from "../../apis/users-api";
 
 const CurrentUserProvider = ({ children }) => {
+  const { connectSocket } = useSocket();
+
+  const countRef = useRef(0);
+
   const [currentUser, setCurrentUser] = useState(null);
   const [initialSetupIsDone, setInitialSetupState] = useState(false);
 
@@ -33,20 +40,30 @@ const CurrentUserProvider = ({ children }) => {
     [currentUser, initialSetupIsDone, isLoggedIn, logout]
   );
 
-  /* Attempting to authenticate the user from the eventual access token stored in local storage */
   useEffect(() => {
-    if (localStorage.getItem("access-token")) {
-      authenticateUserFromToken()
-        .then((user) => {
-          setCurrentUser(user);
-          setInitialSetupState(true);
-        })
-        .catch((error) => {
-          console.log(error);
-          logout();
-        });
-    } else setInitialSetupState(true);
-  }, [logout]);
+    setupAuthentication();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /**
+   * Attempts to authenticate the user from the eventual access token stored in local storage
+   */
+  async function setupAuthentication() {
+    const token = localStorage.getItem("access-token");
+    let user;
+    if (token) {
+      try {
+        user = await authenticateUserFromToken();
+        setCurrentUser(user);
+      } catch (error) {
+        console.log(error);
+        logout();
+      }
+    }
+    setInitialSetupState(true);
+    countRef.current === 0 && connectSocket();
+    countRef.current++;
+  }
 
   return <currentUserContext.Provider value={contextValue}>{children}</currentUserContext.Provider>;
 };

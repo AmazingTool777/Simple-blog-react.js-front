@@ -1,6 +1,7 @@
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // Custom hooks
 import useComments from "./useComments";
@@ -10,8 +11,16 @@ import useNewComment from "./useNewComment";
 import CommentsList from "../CommentsList";
 
 const CommentsSection = ({ post, newCommentInputRef, onPostChange }) => {
-  const { comments, isLoading, hasFetched, page, handleCommentAdded, handleCommentModified, handleCommentDeleted } =
-    useComments(post, onPostChange);
+  const {
+    comments,
+    isLoading,
+    hasFetched,
+    page,
+    someoneIsCommenting,
+    handleCommentAdded,
+    handleCommentModified,
+    handleCommentDeleted,
+  } = useComments(post, onPostChange);
 
   const { content, isSubmitting, handleContentChange, handleContentFocus, handleCommentSubmit } = useNewComment(
     post,
@@ -39,6 +48,14 @@ const CommentsSection = ({ post, newCommentInputRef, onPostChange }) => {
           {isSubmitting && <Spinner animation="border" variant="light" size="sm" className="ms-2" />}
         </Button>
       </Form>
+      {someoneIsCommenting && (
+        <div className="mb-4">
+          <p className="text-secondary">
+            <FontAwesomeIcon icon="pen-alt" className="me-2" />
+            Someone is writing a comment ...
+          </p>
+        </div>
+      )}
       <CommentsList
         comments={comments}
         page={page}

@@ -1,5 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 
+// Contexts
+import { useSocket } from "../../../contexts/socket";
+
 // API calls
 import { fetchPaginatedComments } from "../../../apis/posts-api";
 
@@ -7,13 +10,19 @@ import { fetchPaginatedComments } from "../../../apis/posts-api";
 import usePaginatedApiCall from "../../../hooks/usePaginatedApiCall";
 import useScrollEndObserver from "../../../hooks/useScrollEndObserver";
 import useReactivePagination from "../../../hooks/useReactivePagination";
+import useDebounce from "../../../hooks/useDebounce";
 
 const emptyFunction = () => {};
 
 // Custom hook for handling the list of comments
 export default function useComments(post, onPostChange = emptyFunction) {
+  const { socket } = useSocket();
+
   const [page, setPage] = useState(1);
   const [hasFetched, setHasFetched] = useState(false);
+
+  const [someoneIsCommenting, setSomeoneIsCommenting] = useState(false);
+  const [commentingsCount, setCommentingsCount] = useState(0);
 
   const LIMIT = 10;
   const [comments, isLoading, count, pages, error, reset, setCommentsState] = usePaginatedApiCall(
@@ -63,6 +72,11 @@ export default function useComments(post, onPostChange = emptyFunction) {
     [comments, count, handlePageChangeAfterOperation, setCommentsState]
   );
 
+  const handleSomeoneIsCommenting = useCallback(() => {
+    setSomeoneIsCommenting(true);
+    setCommentingsCount((count) => count + 1);
+  }, []);
+
   const onCountChange = useCallback(
     (count) => {
       onPostChange({
@@ -72,6 +86,38 @@ export default function useComments(post, onPostChange = emptyFunction) {
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [onPostChange]
+  );
+
+  // New comment socket event handler
+  const handleNewComment = useCallback(
+    (data) => {
+      handleCommentAdded({
+        ...data.payload.comment,
+        user: data.payload.user,
+        post: data.payload.post,
+      });
+    },
+    [handleCommentAdded]
+  );
+
+  // Comment modified socket event handler
+  const handleSocketCommentModified = useCallback(
+    (data) => {
+      handleCommentModified({
+        ...data.comment,
+        user: data.user,
+        post: data.post,
+      });
+    },
+    [handleCommentModified]
+  );
+
+  // Comment Deleted socket event handler
+  const handleSocketCommentDeleted = useCallback(
+    (data) => {
+      handleCommentDeleted(data.commentId);
+    },
+    [handleCommentDeleted]
   );
 
   useEffect(() => {
@@ -89,6 +135,28 @@ export default function useComments(post, onPostChange = emptyFunction) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [count, onCountChange]);
 
+  useEffect(() => {
+    if (socket) {
+      socket.on("comment_added", handleNewComment);
+      socket.on("comment_modified", handleSocketCommentModified);
+      socket.on("comment_deleted", handleSocketCommentDeleted);
+      socket.on("user_commenting", handleSomeoneIsCommenting);
+
+      return () => {
+        const events = ["comment_added", "comment_modified", "comment_deleted", "user_commenting"];
+        events.forEach((e) => socket.off(e));
+      };
+    }
+  }, [socket, handleNewComment, handleSocketCommentModified, handleSocketCommentDeleted, handleSomeoneIsCommenting]);
+
+  useDebounce(
+    () => {
+      setSomeoneIsCommenting(false);
+    },
+    1000,
+    [commentingsCount]
+  );
+
   const handleEndOfScroll = useCallback(() => page < pages && setPage(page + 1), [pages, page]);
   useScrollEndObserver(handleEndOfScroll);
 
@@ -99,6 +167,7 @@ export default function useComments(post, onPostChange = emptyFunction) {
     count,
     pages,
     hasFetched,
+    someoneIsCommenting,
     handleCommentAdded,
     handleCommentModified,
     handleCommentDeleted,
