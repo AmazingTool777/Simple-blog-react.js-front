@@ -24,4 +24,4 @@ This project is deployed on Netlify by the following URL: https://tool-simple-bl
 
 ### REST API backend repository
 
-The source code for the REST API as a backend for this project can be found here: https://github.com/ToolTra/simple_blog-node.ts-backend
+The source code for the REST API as a backend for this project can be found here: https://github.com/AmazingTool777/simple_blog-node.ts-backend
